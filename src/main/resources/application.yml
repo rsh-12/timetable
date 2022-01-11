@@ -1,0 +1,22 @@
+app:
+  datasource:
+    main:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: ${JDBC_URL}
+      username: ${DB_USER}
+      password: ${DB_PWD}
+      pool-size: 5
+
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
+
+spring:
+  flyway:
+    locations: classpath:db.migration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER}
