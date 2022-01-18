@@ -25,22 +25,22 @@ public class DayRepositoryTests extends PostgreSqlTestBase {
     @Autowired
     private DayRepository repository;
 
-    private Day after;
+    private Day savedEntity;
 
     @BeforeEach
     void setUp() {
         repository.deleteAll();
 
-        Day before = new Day(Weekday.MONDAY);
-        after = repository.save(before);
+        Day newEntity = new Day(Weekday.MONDAY);
+        savedEntity = repository.save(newEntity);
 
-        assertEquals(before.getName(), after.getName());
+        assertEquals(newEntity.getName(), savedEntity.getName());
     }
 
     @Test
     public void findByName() {
         Day foundEntity = repository.findByName(Weekday.MONDAY).orElseThrow();
-        assertEquals(after, foundEntity);
+        assertEquals(savedEntity, foundEntity);
     }
 
 }
