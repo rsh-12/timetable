@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.transaction.annotation.Transactional;
+import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Day;
 import ru.timetable.domain.Weekday;
 
