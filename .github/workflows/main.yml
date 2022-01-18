@@ -1,0 +1,17 @@
+name: Timetable API CI
+
+on:
+  push:
+    branches: [ '**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-verion: 16.0.1
+      - name: Run tests
+        run: mvn test
