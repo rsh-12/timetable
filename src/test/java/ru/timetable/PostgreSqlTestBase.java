@@ -1,4 +1,4 @@
-package ru.timetable.repository;
+package ru.timetable;
 /*
  * Date: 15.01.2022
  * Time: 11:04 PM
