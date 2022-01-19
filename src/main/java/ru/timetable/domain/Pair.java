@@ -22,4 +22,12 @@ public class Pair<S extends String, E extends String> {
         this.end = end;
     }
 
+    @Override
+    public String toString() {
+        return "Pair{" +
+                "start='" + start + '\'' +
+                ", end='" + end + '\'' +
+                '}';
+    }
+
 }
