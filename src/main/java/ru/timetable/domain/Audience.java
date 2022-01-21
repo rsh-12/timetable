@@ -4,17 +4,15 @@ package ru.timetable.domain;
  * Time: 8:25 AM
  * */
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  * Represents the classroom number. The classroom number can be either a number or a string. For
- * example 114 or 'VRK'
+ * example 114 or 'Gym'
  */
 @Getter
 @Setter
@@ -25,14 +23,11 @@ public class Audience {
 
     private String number;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     public Audience() {
-
     }
 
     public Audience(String number) {
