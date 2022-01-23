@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @Setter
@@ -22,12 +20,10 @@ public class Subject {
     private String name;
 
     // lecture or practice
-    private String type;
+    private SubjectType type;
 
-    @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     public Subject() {
@@ -35,10 +31,10 @@ public class Subject {
 
     public Subject(String name) {
         this.name = name;
-        this.type = "lecture";
+        this.type = SubjectType.LECTURE;
     }
 
-    public Subject(String name, String type) {
+    public Subject(String name, SubjectType type) {
         this.name = name;
         this.type = type;
     }
