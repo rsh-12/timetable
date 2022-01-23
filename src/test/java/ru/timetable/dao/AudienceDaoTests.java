@@ -1,45 +1,50 @@
-package ru.timetable.repository;
+package ru.timetable.dao;
 /*
  * Date: 18.01.2022
  * Time: 8:38 AM
  * */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Audience;
 
-@DataJdbcTest
+@SpringBootTest
 @Transactional(propagation = NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class AudienceRepositoryTests extends PostgreSqlTestBase {
+public class AudienceDaoTests extends PostgreSqlTestBase {
 
     @Autowired
-    private AudienceRepository repository;
+    private AudienceDao dao;
 
     private Audience savedEntity;
 
     @BeforeEach
     void setUp() {
-        repository.deleteAll();
-
-        Audience newEntity = new Audience("112");
-        savedEntity = repository.save(newEntity);
-
-        assertEquals(newEntity.getNumber(), savedEntity.getNumber());
+        dao.deleteAll();
+        dao.insert(new Audience("112"));
+        savedEntity = dao.findByNumber("112").orElse(null);
     }
 
     @Test
     public void findById() {
-        Audience foundEntity = repository.findById(savedEntity.getId()).orElseThrow();
+        Audience foundEntity = dao.findById(savedEntity.getId()).orElse(null);
+
+        assertNotNull(foundEntity);
+        assertNotNull(foundEntity.getId());
+
+        assertNotNull(foundEntity.getCreatedAt());
+        assertNotNull(foundEntity.getUpdatedAt());
+
         assertEquals(savedEntity, foundEntity);
     }
 
