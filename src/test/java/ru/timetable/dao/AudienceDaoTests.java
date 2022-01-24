@@ -31,8 +31,13 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
     @BeforeEach
     void setUp() {
         dao.deleteAll();
+        assertEquals(0, dao.count());
+
         dao.insert(new Audience("112"));
         savedEntity = dao.findByNumber("112").orElse(null);
+
+        assertNotNull(savedEntity);
+        assertEquals(1, dao.count());
     }
 
     @Test
