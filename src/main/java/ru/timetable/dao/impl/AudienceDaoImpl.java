@@ -1,15 +1,16 @@
 package ru.timetable.dao.impl;
 
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.AudienceDao;
 import ru.timetable.dao.util.AudienceRowMapper;
 import ru.timetable.domain.Audience;
 
-@Component
+@Slf4j
 @Repository
 public class AudienceDaoImpl implements AudienceDao {
 
@@ -37,8 +38,12 @@ public class AudienceDaoImpl implements AudienceDao {
                     INSERT INTO audience(number)
                     VALUES (?);
                 """;
-
-        return jdbcTemplate.update(sql, audience.getNumber());
+        try {
+            return jdbcTemplate.update(sql, audience.getNumber());
+        } catch (DuplicateKeyException e) {
+            log.warn(e.getCause().getMessage());
+        }
+        return 0;
     }
 
     @Override
