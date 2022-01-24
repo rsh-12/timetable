@@ -57,4 +57,15 @@ public class AudienceDaoImpl implements AudienceDao {
                 .stream().findFirst();
     }
 
+    @Override
+    public int count() {
+        String sql = """
+                SELECT COUNT(*) AS total
+                FROM audience;
+                """;
+        Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return Optional.ofNullable(total).orElse(0);
+    }
+
 }

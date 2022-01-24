@@ -13,4 +13,6 @@ public interface AudienceDao {
 
     Optional<Audience> findByNumber(String number);
 
+    int count();
+
 }
