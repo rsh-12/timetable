@@ -15,7 +15,6 @@ public class Day {
     private Weekday name;
 
     public Day() {
-
     }
 
     public Day(Weekday name) {
