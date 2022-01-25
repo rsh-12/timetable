@@ -48,6 +48,7 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public void deleteAll() {
+        //noinspection SqlWithoutWhere
         jdbcTemplate.update("DELETE FROM audience;");
     }
 
