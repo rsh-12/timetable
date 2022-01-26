@@ -5,6 +5,7 @@ package ru.timetable.domain;
  * */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,12 @@ public class AudienceTests {
 
         Audience newEntity = new Audience("114");
         assertEquals(savedEntity, newEntity);
+    }
+
+    @Test
+    public void equals_ShouldNotBeEqual() {
+        Audience newEntity = new Audience("Gym");
+        assertNotEquals(newEntity, savedEntity);
     }
 
     @Test
