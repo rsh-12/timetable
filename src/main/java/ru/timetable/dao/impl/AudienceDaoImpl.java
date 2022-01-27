@@ -23,6 +23,8 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public Optional<Audience> findById(Integer id) {
+        log.debug("findById: searches for an Audience with id={}", id);
+
         String sql = """
                 SELECT * FROM audience
                 WHERE id = ?;
@@ -34,6 +36,8 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public int insert(Audience audience) {
+        log.debug("insert: saves the Audience to the DB");
+
         String sql = """
                     INSERT INTO audience(number)
                     VALUES (?);
@@ -48,12 +52,16 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public void deleteAll() {
+        log.debug("deleteAll: deletes all Audiences in the DB");
+
         //noinspection SqlWithoutWhere
         jdbcTemplate.update("DELETE FROM audience;");
     }
 
     @Override
     public Optional<Audience> findByNumber(String number) {
+        log.debug("findByNumber: searches for an Audience with number={}", number);
+
         String sql = """
                 SELECT * FROM audience
                 WHERE number = ?;
@@ -65,6 +73,8 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public int count() {
+        log.debug("count: returns the number of all Audiences");
+
         String sql = """
                 SELECT COUNT(*) AS total
                 FROM audience;
