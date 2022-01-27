@@ -20,3 +20,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${AUTH_SERVER}
+
+logging:
+  level:
+    org.springframework.jdbc.core: debug
+    ru.timetable: debug
