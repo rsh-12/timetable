@@ -1,4 +1,4 @@
-package ru.timetable.domain;
+package ru.timetable.domain.util;
 
 public enum SubjectType {
     LECTURE, PRACTICE

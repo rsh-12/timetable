@@ -1,4 +1,4 @@
-package ru.timetable.domain;
+package ru.timetable.domain.util;
 /*
  * Date: 16.01.2022
  * Time: 11:30 AM
