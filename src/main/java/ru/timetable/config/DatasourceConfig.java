@@ -22,7 +22,7 @@ import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.timetable.domain.Pair;
+import ru.timetable.domain.util.Pair;
 
 
 @Configuration

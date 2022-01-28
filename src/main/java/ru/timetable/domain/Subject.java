@@ -9,6 +9,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import ru.timetable.domain.util.SubjectType;
 
 @Getter
 @Setter
@@ -27,6 +28,7 @@ public class Subject {
     private LocalDateTime updatedAt;
 
     public Subject() {
+        this.type = SubjectType.LECTURE;
     }
 
     public Subject(String name) {

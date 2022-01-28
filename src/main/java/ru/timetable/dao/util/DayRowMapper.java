@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import ru.timetable.domain.Day;
-import ru.timetable.domain.Weekday;
+import ru.timetable.domain.util.Weekday;
 
 public class DayRowMapper implements RowMapper<Day> {
 

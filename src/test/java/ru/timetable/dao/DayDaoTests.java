@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Day;
-import ru.timetable.domain.Weekday;
+import ru.timetable.domain.util.Weekday;
 
 @SpringBootTest
 @Transactional(propagation = NOT_SUPPORTED)
