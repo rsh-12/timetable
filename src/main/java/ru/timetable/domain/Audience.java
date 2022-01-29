@@ -6,7 +6,10 @@ package ru.timetable.domain;
 
 import java.time.Instant;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
@@ -16,6 +19,9 @@ import org.springframework.data.annotation.Id;
  */
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Audience {
 
     @Id
@@ -26,9 +32,6 @@ public class Audience {
     private Instant createdAt;
 
     private Instant updatedAt;
-
-    public Audience() {
-    }
 
     public Audience(String number) {
         this.number = number;

@@ -1,22 +1,25 @@
 package ru.timetable.domain;
 
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Weekday;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Day {
 
     @Id
     private Integer id;
 
     private Weekday name;
-
-    public Day() {
-    }
 
     public Day(Weekday name) {
         this.name = name;
