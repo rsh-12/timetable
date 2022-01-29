@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.Arrays;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ public class DayDaoTests extends PostgreSqlTestBase {
     }
 
     @Test
-    public void name() {
-
+    public void findById_ShouldReturnSavedEntity() {
+        assertEquals(Optional.of(savedEntity), dao.findById(savedEntity.getId()));
     }
 
     @Test
