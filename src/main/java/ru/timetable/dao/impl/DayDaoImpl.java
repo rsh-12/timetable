@@ -7,6 +7,7 @@ package ru.timetable.dao.impl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.DayDao;
@@ -35,17 +36,40 @@ public class DayDaoImpl implements DayDao {
 
     @Override
     public int insert(Day day) {
-        return 0;
+        log.debug("insert: saves the Day to the DB");
+
+        String sql = """
+                INSERT INTO day(name)
+                VALUES (?);
+                """;
+
+        try {
+            return jdbcTemplate.update(sql, day.getName().name());
+        } catch (DuplicateKeyException e) {
+            log.warn(e.getCause().getMessage());
+            return 0;
+        }
     }
 
     @Override
     public void deleteAll() {
+        log.debug("deleteAll: deletes all Days in the DB");
 
+        //noinspection SqlWithoutWhere
+        jdbcTemplate.update("DELETE FROM day;");
     }
 
     @Override
     public int count() {
-        return 0;
+        log.debug("count: returns the number of all Days");
+
+        String sql = """
+                select count(*) as total
+                from day;
+                """;
+        Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return Optional.ofNullable(total).orElse(0);
     }
 
 }
