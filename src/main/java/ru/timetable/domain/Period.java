@@ -5,20 +5,27 @@ package ru.timetable.domain;
  * */
 
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Pair;
+import ru.timetable.domain.util.PeriodNum;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Period {
 
     @Id
     private Integer id;
 
     // a number between 1 and 6
-    private short periodNum;
+    private PeriodNum periodNum;
 
     private Pair<String, String> firstHalf;
 
@@ -35,26 +42,17 @@ public class Period {
 
         Period period = (Period) o;
 
-        if (periodNum != period.periodNum) {
+        if (!Objects.equals(id, period.id)) {
             return false;
         }
-        return Objects.equals(id, period.id);
+        return periodNum == period.periodNum;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (int) periodNum;
+        result = 31 * result + periodNum.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Period{" +
-                "periodNum=" + periodNum +
-                ", firstHalf=" + firstHalf +
-                ", secondHalf=" + secondHalf +
-                '}';
     }
 
 }
