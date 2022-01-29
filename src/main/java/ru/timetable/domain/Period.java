@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Pair;
@@ -25,10 +26,13 @@ public class Period {
     private Integer id;
 
     // a number between 1 and 6
+    @NonNull
     private PeriodNum periodNum;
 
+    @NonNull
     private Pair<String, String> firstHalf;
 
+    @NonNull
     private Pair<String, String> secondHalf;
 
     @Override

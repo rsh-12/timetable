@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Weekday;
@@ -19,9 +20,10 @@ public class Day {
     @Id
     private Integer id;
 
+    @NonNull
     private Weekday name;
 
-    public Day(Weekday name) {
+    public Day(@NonNull Weekday name) {
         this.name = name;
     }
 

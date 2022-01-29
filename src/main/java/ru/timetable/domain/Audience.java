@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
@@ -27,13 +28,14 @@ public class Audience {
     @Id
     private Integer id;
 
+    @NonNull
     private String number;
 
     private Instant createdAt;
 
     private Instant updatedAt;
 
-    public Audience(String number) {
+    public Audience(@NonNull String number) {
         this.number = number;
     }
 
