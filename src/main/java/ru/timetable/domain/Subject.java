@@ -6,13 +6,19 @@ package ru.timetable.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.SubjectType;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Subject {
 
     @Id
@@ -26,20 +32,6 @@ public class Subject {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    public Subject() {
-        this.type = SubjectType.LECTURE;
-    }
-
-    public Subject(String name) {
-        this.name = name;
-        this.type = SubjectType.LECTURE;
-    }
-
-    public Subject(String name, SubjectType type) {
-        this.name = name;
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {
