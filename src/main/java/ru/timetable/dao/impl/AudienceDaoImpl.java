@@ -48,6 +48,22 @@ public class AudienceDaoImpl implements AudienceDao {
     }
 
     @Override
+    public void deleteById(Integer id) {
+        log.debug("deleteById: tries to delete an Audience with id={}", id);
+        jdbcTemplate.update("DELETE FROM audience WHERE id = ?;", id);
+    }
+
+    @Override
+    public void delete(Audience audience) {
+        if (audience == null || audience.getId() == null) {
+            return;
+        }
+
+        log.debug("delete: tries to delete an Audience {}", audience.getNumber());
+        jdbcTemplate.update("DELETE FROM audience WHERE id = ?;", audience.getId());
+    }
+
+    @Override
     public void deleteAll() {
         log.debug("deleteAll: deletes all Audiences in the DB");
 
