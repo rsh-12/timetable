@@ -63,4 +63,30 @@ public class DayDaoTests extends PostgreSqlTestBase {
                 .forEach(day -> dao.insert(day));
     }
 
+    @Test
+    public void deleteById() {
+        dao.deleteById(savedEntity.getId());
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void delete() {
+        dao.delete(savedEntity);
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void deleteById_ShouldNotFail() {
+        dao.deleteById(null);
+        dao.deleteById(savedEntity.getId());
+        dao.deleteById(savedEntity.getId());
+    }
+
+    @Test
+    public void delete_ShouldNotFail() {
+        dao.delete(null);
+        dao.delete(savedEntity);
+        dao.delete(savedEntity);
+    }
+
 }

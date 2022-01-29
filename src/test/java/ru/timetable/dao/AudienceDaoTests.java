@@ -53,4 +53,30 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
         assertEquals(savedEntity, foundEntity);
     }
 
+    @Test
+    public void deleteById() {
+        dao.deleteById(savedEntity.getId());
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void delete() throws InterruptedException {
+        dao.delete(savedEntity);
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void deleteById_ShouldNotFail() {
+        dao.deleteById(null);
+        dao.deleteById(savedEntity.getId());
+        dao.deleteById(savedEntity.getId());
+    }
+
+    @Test
+    public void delete_ShouldNotFail() {
+        dao.delete(null);
+        dao.delete(savedEntity);
+        dao.delete(savedEntity);
+    }
+
 }
