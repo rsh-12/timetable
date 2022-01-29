@@ -14,10 +14,10 @@ public class DayRowMapper implements RowMapper<Day> {
 
     @Override
     public Day mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Day day = new Day();
-        day.setId(rs.getInt("id"));
-        day.setName(Weekday.valueOf(rs.getString("name").toUpperCase()));
-
-        return day;
+        return Day.builder()
+                .id(rs.getInt("id"))
+                .name(Weekday.valueOf(rs.getString("name").toUpperCase()))
+                .build();
     }
+
 }

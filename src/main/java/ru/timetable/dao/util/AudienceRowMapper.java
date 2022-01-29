@@ -13,13 +13,12 @@ public class AudienceRowMapper implements RowMapper<Audience> {
 
     @Override
     public Audience mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Audience audience = new Audience();
-
-        audience.setId(rs.getInt("id"));
-        audience.setNumber(rs.getString("number"));
-        audience.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-        audience.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
-
-        return audience;
+        return Audience.builder()
+                .id(rs.getInt("id"))
+                .number(rs.getString("number"))
+                .createdAt(rs.getTimestamp("created_at").toInstant())
+                .updatedAt(rs.getTimestamp("updated_at").toInstant())
+                .build();
     }
+
 }
