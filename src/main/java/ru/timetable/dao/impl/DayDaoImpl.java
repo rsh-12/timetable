@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import ru.timetable.dao.DayDao;
 import ru.timetable.dao.util.DayRowMapper;
 import ru.timetable.domain.Day;
+import ru.timetable.domain.util.Weekday;
 
 @Slf4j
 @Repository
@@ -64,12 +65,25 @@ public class DayDaoImpl implements DayDao {
         log.debug("count: returns the number of all Days");
 
         String sql = """
-                select count(*) as total
-                from day;
+                SELECT COUNT(*) AS total
+                FROM day;
                 """;
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
+    }
+
+    @Override
+    public Optional<Day> findByWeekday(Weekday day) {
+        log.debug("findByWeekday: searches for a Day MONDAY{}", day.name());
+
+        String sql = """
+                SELECT * FROM day
+                WHERE name = ?;
+                """;
+
+        return jdbcTemplate.query(sql, new DayRowMapper(), day.name())
+                .stream().findFirst();
     }
 
 }
