@@ -38,12 +38,13 @@ public class AudienceDaoImpl implements AudienceDao {
                     INSERT INTO audience(number)
                     VALUES (?);
                 """;
+
         try {
             return jdbcTemplate.update(sql, audience.getNumber());
         } catch (DuplicateKeyException e) {
             log.warn(e.getCause().getMessage());
+            return 0;
         }
-        return 0;
     }
 
     @Override
