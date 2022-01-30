@@ -150,7 +150,9 @@
         </executions>
         <configuration>
           <excludes>
-            <exclude>ru/timetable/TimetableApiApplication.class/</exclude>
+            <exclude>ru/timetable/TimetableApiApplication.class</exclude>
+            <exclude>ru/timetable/dao/util/**/*</exclude>
+            <exclude>ru/timetable/config/**/*</exclude>
           </excludes>
         </configuration>
       </plugin>
