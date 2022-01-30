@@ -79,4 +79,9 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
         dao.delete(savedEntity);
     }
 
+    @Test
+    public void insert_ExistingEntity_ShouldReturn0() {
+        assertEquals(0, dao.insert(savedEntity));
+    }
+
 }
