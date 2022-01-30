@@ -55,12 +55,9 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public void delete(Audience audience) {
-        if (audience == null || audience.getId() == null) {
-            return;
+        if (audience != null) {
+            deleteById(audience.getId());
         }
-
-        log.debug("delete: tries to delete an Audience {}", audience.getNumber());
-        jdbcTemplate.update("DELETE FROM audience WHERE id = ?;", audience.getId());
     }
 
     @Override

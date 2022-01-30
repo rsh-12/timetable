@@ -60,12 +60,9 @@ public class DayDaoImpl implements DayDao {
 
     @Override
     public void delete(Day day) {
-        if (day == null || day.getId() == null) {
-            return;
+        if (day != null) {
+            deleteById(day.getId());
         }
-
-        log.debug("delete: tries to delete a Day {}", day.getName().name());
-        jdbcTemplate.update("DELETE FROM day WHERE id = ?;", day.getId());
     }
 
     @Override
