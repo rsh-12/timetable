@@ -46,17 +46,20 @@ public class Period {
 
         Period period = (Period) o;
 
-        if (!Objects.equals(id, period.id)) {
+        if (periodNum != period.periodNum) {
             return false;
         }
-        return periodNum == period.periodNum;
+        if (!firstHalf.equals(period.firstHalf)) {
+            return false;
+        }
+        return secondHalf.equals(period.secondHalf);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + periodNum.hashCode();
+        int result = periodNum.hashCode();
+        result = 31 * result + firstHalf.hashCode();
+        result = 31 * result + secondHalf.hashCode();
         return result;
     }
-
 }
