@@ -4,30 +4,9 @@ package ru.timetable.domain.util;
  * Time: 11:30 AM
  * */
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Represents the time of one half of the lesson, includes the start and end times
  */
-@Getter
-@Setter
-public class Pair<S extends String, E extends String> {
-
-    private S start;
-    private E end;
-
-    public Pair(S start, E end) {
-        this.start = start;
-        this.end = end;
-    }
-
-    @Override
-    public String toString() {
-        return "Pair{" +
-                "start='" + start + '\'' +
-                ", end='" + end + '\'' +
-                '}';
-    }
+public record Pair<S extends String, E extends String>(S start, E end) {
 
 }
