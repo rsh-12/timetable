@@ -18,4 +18,13 @@ public enum PeriodNum {
         return periodNum;
     }
 
+    public static PeriodNum valueOf(int n) {
+        for (PeriodNum periodNum : values()) {
+            if (periodNum.periodNum == n) {
+                return periodNum;
+            }
+        }
+        throw new IllegalArgumentException("Invalid periodNum: " + n);
+    }
+
 }
