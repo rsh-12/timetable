@@ -21,8 +21,8 @@ public class PeriodTests {
     void setUp() {
         savedEntity = Period.builder()
                 .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair<>("08:30", "09:15"))
-                .secondHalf(new Pair<>("09:20", "10:05"))
+                .firstHalf(new Pair("08:30", "09:15"))
+                .secondHalf(new Pair("09:20", "10:05"))
                 .build();
     }
 
@@ -33,8 +33,8 @@ public class PeriodTests {
 
         Period newEntity = Period.builder()
                 .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair<>("08:30", "09:15"))
-                .secondHalf(new Pair<>("09:20", "10:05"))
+                .firstHalf(new Pair("08:30", "09:15"))
+                .secondHalf(new Pair("09:20", "10:05"))
                 .build();
 
         assertEquals(savedEntity, newEntity);
@@ -44,8 +44,8 @@ public class PeriodTests {
     public void equals_PeriodNum_ShouldNotBeEqual() {
         Period newEntity = Period.builder()
                 .periodNum(PeriodNum.SECOND)
-                .firstHalf(new Pair<>("08:30", "09:15"))
-                .secondHalf(new Pair<>("09:20", "10:05"))
+                .firstHalf(new Pair("08:30", "09:15"))
+                .secondHalf(new Pair("09:20", "10:05"))
                 .build();
 
         assertNotEquals(savedEntity, newEntity);
@@ -55,8 +55,8 @@ public class PeriodTests {
     public void equals_Pair_ShouldNotBeEqual() {
         Period newEntity = Period.builder()
                 .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair<>("8:30", "9:15"))
-                .secondHalf(new Pair<>("9:20", "10:05"))
+                .firstHalf(new Pair("8:30", "9:15"))
+                .secondHalf(new Pair("9:20", "10:05"))
                 .build();
 
         assertNotEquals(savedEntity, newEntity);
@@ -66,8 +66,8 @@ public class PeriodTests {
     public void equals_Symmetric_ShouldBeEqual() {
         Period newEntity = Period.builder()
                 .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair<>("08:30", "09:15"))
-                .secondHalf(new Pair<>("09:20", "10:05"))
+                .firstHalf(new Pair("08:30", "09:15"))
+                .secondHalf(new Pair("09:20", "10:05"))
                 .build();
 
         assertTrue(newEntity.equals(savedEntity) && savedEntity.equals(newEntity));
