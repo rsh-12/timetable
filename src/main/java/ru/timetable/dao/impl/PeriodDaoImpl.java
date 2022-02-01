@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import ru.timetable.dao.PeriodDao;
 import ru.timetable.dao.util.PeriodRowMapper;
 import ru.timetable.domain.Period;
+import ru.timetable.domain.util.PeriodNum;
 
 @Slf4j
 @Repository
@@ -43,7 +44,7 @@ public class PeriodDaoImpl implements PeriodDao {
 
         String sql = """
                 INSERT INTO period(period_num, first_half, second_half) 
-                VALUES (?, ?, ?);
+                VALUES (?, ? :: jsonb, ? :: jsonb);
                 """;
 
         try {
@@ -90,6 +91,19 @@ public class PeriodDaoImpl implements PeriodDao {
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
+    }
+
+    @Override
+    public Optional<Period> findByPeriodNum(PeriodNum periodNum) {
+        log.debug("findByPeriodNum: searches for a Period={}", periodNum.getAsInt());
+
+        String sql = """
+                SELECT * FROM period
+                WHERE period_num = ?;
+                """;
+
+        return jdbcTemplate.query(sql, new PeriodRowMapper(), periodNum.getAsInt())
+                .stream().findFirst();
     }
 
 }
