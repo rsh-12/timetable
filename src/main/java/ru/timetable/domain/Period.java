@@ -4,7 +4,6 @@ package ru.timetable.domain;
  * Time: 7:38 AM
  * */
 
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,10 +29,10 @@ public class Period {
     private PeriodNum periodNum;
 
     @NonNull
-    private Pair<String, String> firstHalf;
+    private Pair firstHalf;
 
     @NonNull
-    private Pair<String, String> secondHalf;
+    private Pair secondHalf;
 
     @Override
     public boolean equals(Object o) {
