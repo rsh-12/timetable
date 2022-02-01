@@ -7,6 +7,6 @@ package ru.timetable.domain.util;
 /**
  * Represents the time of one half of the lesson, includes the start and end times
  */
-public record Pair<S extends String, E extends String>(S start, E end) {
+public record Pair(String start, String end) {
 
 }
