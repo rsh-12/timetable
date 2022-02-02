@@ -8,8 +8,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.SubjectType;
@@ -24,10 +26,11 @@ public class Subject {
     @Id
     private Integer id;
 
+    @NonNull
     private String name;
 
-    // lecture or practice
-    private SubjectType type;
+    @Default
+    private SubjectType type = SubjectType.LECTURE;
 
     private LocalDateTime createdAt;
 
