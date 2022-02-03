@@ -6,11 +6,11 @@ public interface CrudDao<T> {
 
     Optional<T> findById(Integer id);
 
-    int insert(T t);
+    int insert(T entity);
 
     void deleteById(Integer id);
 
-    void delete(T t);
+    void delete(T entity);
 
     void deleteAll();
 
