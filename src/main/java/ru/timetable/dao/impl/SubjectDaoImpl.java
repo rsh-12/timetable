@@ -7,8 +7,10 @@ package ru.timetable.dao.impl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.SubjectDao;
+import ru.timetable.dao.util.SubjectRowMapper;
 import ru.timetable.domain.Subject;
 
 @Slf4j
@@ -16,9 +18,19 @@ import ru.timetable.domain.Subject;
 @RequiredArgsConstructor
 public class SubjectDaoImpl implements SubjectDao {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Override
     public Optional<Subject> findById(Integer id) {
-        return Optional.empty();
+        log.debug("findById: searches for a Subject with id={}", id);
+
+        String sql = """
+                SELECT * FROM subject
+                WHERE id = ?;
+                """;
+
+        return jdbcTemplate.query(sql, new SubjectRowMapper(), id).stream()
+                .findFirst();
     }
 
     @Override
