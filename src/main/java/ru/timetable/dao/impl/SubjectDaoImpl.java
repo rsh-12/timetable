@@ -54,22 +54,36 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public void deleteById(Integer id) {
-
+        log.debug("deleteById: tries to delete a Subject with id={}", id);
+        jdbcTemplate.update("DELETE FROM subject WHERE id = ?;", id);
     }
 
     @Override
     public void delete(Subject subject) {
-
+        if (subject != null) {
+            deleteById(subject.getId());
+        }
     }
 
     @Override
     public void deleteAll() {
+        log.warn("deleteAll: deletes all Subjects in the DB");
 
+        //noinspection SqlWithoutWhere
+        jdbcTemplate.update("DELETE FROM subject;");
     }
 
     @Override
     public int count() {
-        return 0;
+        log.debug("count: returns the number of all Subjects");
+
+        String sql = """
+                SELECT COUNT(*) AS total
+                FROM subject;
+                """;
+        Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return Optional.ofNullable(total).orElse(0);
     }
 
 }
