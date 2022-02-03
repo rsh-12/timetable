@@ -7,6 +7,7 @@ package ru.timetable.dao.impl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.SubjectDao;
@@ -35,7 +36,20 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public int insert(Subject subject) {
-        return 0;
+        log.debug("insert: saves the Subject to the DB");
+
+        String sql = """
+                INSERT INTO subject(name, type)
+                VALUES (?);
+                """;
+
+        try {
+            String type = subject.getType().name().toLowerCase();
+            return jdbcTemplate.update(sql, subject.getName(), type);
+        } catch (DuplicateKeyException e) {
+            log.warn(e.getCause().getMessage());
+            return 0;
+        }
     }
 
     @Override
