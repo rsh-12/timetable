@@ -36,7 +36,7 @@ public class DayDaoImpl implements DayDao {
     }
 
     @Override
-    public int insert(Day day) {
+    public int insert(Day entity) {
         log.debug("insert: saves the Day to the DB");
 
         String sql = """
@@ -45,7 +45,7 @@ public class DayDaoImpl implements DayDao {
                 """;
 
         try {
-            return jdbcTemplate.update(sql, day.getName().name());
+            return jdbcTemplate.update(sql, entity.getName().name());
         } catch (DuplicateKeyException e) {
             log.warn(e.getCause().getMessage());
             return 0;
@@ -59,9 +59,9 @@ public class DayDaoImpl implements DayDao {
     }
 
     @Override
-    public void delete(Day day) {
-        if (day != null) {
-            deleteById(day.getId());
+    public void delete(Day entity) {
+        if (entity != null) {
+            deleteById(entity.getId());
         }
     }
 

@@ -31,7 +31,7 @@ public class AudienceDaoImpl implements AudienceDao {
     }
 
     @Override
-    public int insert(Audience audience) {
+    public int insert(Audience entity) {
         log.debug("insert: saves the Audience to the DB");
 
         String sql = """
@@ -40,7 +40,7 @@ public class AudienceDaoImpl implements AudienceDao {
                 """;
 
         try {
-            return jdbcTemplate.update(sql, audience.getNumber());
+            return jdbcTemplate.update(sql, entity.getNumber());
         } catch (DuplicateKeyException e) {
             log.warn(e.getCause().getMessage());
             return 0;
@@ -54,9 +54,9 @@ public class AudienceDaoImpl implements AudienceDao {
     }
 
     @Override
-    public void delete(Audience audience) {
-        if (audience != null) {
-            deleteById(audience.getId());
+    public void delete(Audience entity) {
+        if (entity != null) {
+            deleteById(entity.getId());
         }
     }
 

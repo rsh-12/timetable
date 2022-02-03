@@ -39,7 +39,7 @@ public class PeriodDaoImpl implements PeriodDao {
     }
 
     @Override
-    public int insert(Period period) {
+    public int insert(Period entity) {
         log.debug("insert: saves the Period to the DB");
 
         String sql = """
@@ -48,9 +48,9 @@ public class PeriodDaoImpl implements PeriodDao {
                 """;
 
         try {
-            int periodNum = period.getPeriodNum().getAsInt();
-            String firstHalf = objectMapper.writeValueAsString(period.getFirstHalf());
-            String secondHalf = objectMapper.writeValueAsString(period.getSecondHalf());
+            int periodNum = entity.getPeriodNum().getAsInt();
+            String firstHalf = objectMapper.writeValueAsString(entity.getFirstHalf());
+            String secondHalf = objectMapper.writeValueAsString(entity.getSecondHalf());
 
             return jdbcTemplate.update(sql, periodNum, firstHalf, secondHalf);
         } catch (DuplicateKeyException | JsonProcessingException e) {
@@ -66,9 +66,9 @@ public class PeriodDaoImpl implements PeriodDao {
     }
 
     @Override
-    public void delete(Period period) {
-        if (period != null) {
-            deleteById(period.getId());
+    public void delete(Period entity) {
+        if (entity != null) {
+            deleteById(entity.getId());
         }
     }
 

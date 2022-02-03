@@ -35,7 +35,7 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public int insert(Subject subject) {
+    public int insert(Subject entity) {
         log.debug("insert: saves the Subject to the DB");
 
         String sql = """
@@ -44,8 +44,8 @@ public class SubjectDaoImpl implements SubjectDao {
                 """;
 
         try {
-            String type = subject.getType().name().toLowerCase();
-            return jdbcTemplate.update(sql, subject.getName(), type);
+            String type = entity.getType().name().toLowerCase();
+            return jdbcTemplate.update(sql, entity.getName(), type);
         } catch (DuplicateKeyException e) {
             log.warn(e.getCause().getMessage());
             return 0;
@@ -59,9 +59,9 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public void delete(Subject subject) {
-        if (subject != null) {
-            deleteById(subject.getId());
+    public void delete(Subject entity) {
+        if (entity != null) {
+            deleteById(entity.getId());
         }
     }
 
