@@ -26,6 +26,7 @@ public class SubjectRowMapper implements RowMapper<Subject> {
 
         return Subject.builder()
                 .id(rs.getInt("id"))
+                .name(rs.getString("name"))
                 .type(type)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
