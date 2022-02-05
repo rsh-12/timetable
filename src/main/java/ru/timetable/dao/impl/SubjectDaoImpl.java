@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import ru.timetable.dao.SubjectDao;
 import ru.timetable.dao.util.SubjectRowMapper;
 import ru.timetable.domain.Subject;
+import ru.timetable.domain.util.SubjectType;
 
 @Slf4j
 @Repository
@@ -40,7 +41,7 @@ public class SubjectDaoImpl implements SubjectDao {
 
         String sql = """
                 INSERT INTO subject(name, type)
-                VALUES (?);
+                VALUES (?, ?);
                 """;
 
         try {
@@ -84,6 +85,22 @@ public class SubjectDaoImpl implements SubjectDao {
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
+    }
+
+
+    @Override
+    public Optional<Subject> findByNameAndSubjectType(String name, SubjectType subjectType) {
+        log.debug("findByNameAndSubjectType: searches for a Subject {}, {}", name, subjectType);
+
+        String sql = """
+                SELECT * FROM subject
+                WHERE name = ? AND type = ?;
+                """;
+
+        String type = subjectType.name().toLowerCase();
+
+        return jdbcTemplate.query(sql, new SubjectRowMapper(), name, type)
+                .stream().findFirst();
     }
 
 }
