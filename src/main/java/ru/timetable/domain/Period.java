@@ -14,6 +14,10 @@ import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Pair;
 import ru.timetable.domain.util.PeriodNum;
 
+
+/**
+ * Represents the start and end time of the half of the lesson.
+ */
 @Getter
 @Setter
 @Builder
@@ -24,7 +28,6 @@ public class Period {
     @Id
     private Integer id;
 
-    // a number between 1 and 6
     @NonNull
     private PeriodNum periodNum;
 
@@ -61,4 +64,5 @@ public class Period {
         result = 31 * result + secondHalf.hashCode();
         return result;
     }
+
 }
