@@ -11,7 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.DayDao;
-import ru.timetable.dao.util.DayRowMapper;
+import ru.timetable.dao.mappers.DayRowMapper;
 import ru.timetable.domain.Day;
 import ru.timetable.domain.util.Weekday;
 

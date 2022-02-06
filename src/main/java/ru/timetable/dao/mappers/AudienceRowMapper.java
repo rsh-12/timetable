@@ -1,4 +1,4 @@
-package ru.timetable.dao.util;
+package ru.timetable.dao.mappers;
 /*
  * Date: 21.01.2022
  * Time: 8:06 PM

@@ -13,7 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.PeriodDao;
-import ru.timetable.dao.util.PeriodRowMapper;
+import ru.timetable.dao.mappers.PeriodRowMapper;
 import ru.timetable.domain.Period;
 import ru.timetable.domain.util.PeriodNum;
 

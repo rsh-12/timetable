@@ -11,7 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.SubjectDao;
-import ru.timetable.dao.util.SubjectRowMapper;
+import ru.timetable.dao.mappers.SubjectRowMapper;
 import ru.timetable.domain.Subject;
 import ru.timetable.domain.util.SubjectType;
 

@@ -7,7 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.AudienceDao;
-import ru.timetable.dao.util.AudienceRowMapper;
+import ru.timetable.dao.mappers.AudienceRowMapper;
 import ru.timetable.domain.Audience;
 
 @Slf4j
