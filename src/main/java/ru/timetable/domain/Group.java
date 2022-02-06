@@ -35,6 +35,15 @@ public class Group {
 
     private LocalDateTime updatedAt;
 
+    public Group(@NonNull String name) {
+        this.name = name;
+    }
+
+    public Group(@NonNull String name, String department) {
+        this.name = name;
+        this.department = department;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -49,17 +58,13 @@ public class Group {
         if (!Objects.equals(id, group.id)) {
             return false;
         }
-        if (!name.equals(group.name)) {
-            return false;
-        }
-        return Objects.equals(department, group.department);
+        return name.equals(group.name);
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + name.hashCode();
-        result = 31 * result + (department != null ? department.hashCode() : 0);
         return result;
     }
 
