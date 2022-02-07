@@ -4,7 +4,7 @@ package ru.timetable.domain;
  * Time: 6:20 AM
  * */
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,9 +32,9 @@ public class Subject {
     @Default
     private SubjectType type = SubjectType.LECTURE;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @Override
     public boolean equals(Object o) {

@@ -4,7 +4,7 @@ package ru.timetable.domain;
  * Time: 1:10 PM
  * */
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +31,9 @@ public class Group {
 
     private String department;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     public Group(@NonNull String name) {
         this.name = name;
