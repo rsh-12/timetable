@@ -1,0 +1,3 @@
+ALTER TABLE period
+    ALTER COLUMN first_half SET NOT NULL,
+    ALTER COLUMN second_half SET NOT NULL;
