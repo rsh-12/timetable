@@ -6,7 +6,6 @@ package ru.timetable.dao.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 import ru.timetable.domain.Subject;
@@ -21,15 +20,12 @@ public class SubjectRowMapper implements RowMapper<Subject> {
                 .map(SubjectType::valueOf)
                 .orElse(SubjectType.LECTURE);
 
-        LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-        LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
-
         return Subject.builder()
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .type(type)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
+                .createdAt(rs.getTimestamp("created_at").toInstant())
+                .updatedAt(rs.getTimestamp("updated_at").toInstant())
                 .build();
     }
 
