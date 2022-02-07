@@ -9,23 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.timetable.domain.util.SubjectType;
 
 public class SubjectTests {
 
-    private Subject savedEntity;
-
-    @BeforeEach
-    void setUp() {
-        savedEntity = Subject.builder()
-                .id(1)
-                .name("УП")
-                .createdAt(Instant.now())
-                .updatedAt(Instant.now())
-                .build();
-    }
+    private final Subject savedEntity = Subject.builder()
+            .id(1)
+            .name("УП")
+            .createdAt(Instant.now())
+            .updatedAt(Instant.now())
+            .build();
 
     @Test
     public void equals_ShouldBeEqual() {

@@ -8,17 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class AudienceTests {
 
-    private Audience savedEntity;
-
-    @BeforeEach
-    void setUp() {
-        savedEntity = new Audience("114");
-    }
+    private final Audience savedEntity = new Audience("114");
 
     @Test
     public void equals_ShouldBeEqual() {

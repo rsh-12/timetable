@@ -4,19 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.timetable.domain.util.Weekday;
 
 
 class DayTests {
 
-    private Day savedEntity;
-
-    @BeforeEach
-    void setUp() {
-        savedEntity = new Day(Weekday.MONDAY);
-    }
+    private final Day savedEntity = new Day(Weekday.MONDAY);
 
     @Test
     public void equals_ShouldBeEqual() {

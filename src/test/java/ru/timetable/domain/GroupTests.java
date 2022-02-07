@@ -8,17 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GroupTests {
 
-    private Group savedEntity;
-
-    @BeforeEach
-    void setUp() {
-        savedEntity = new Group("ПО-316", "ОИТ");
-    }
+    private final Group savedEntity = new Group("ПО-316", "ОИТ");
 
     @Test
     public void equals_ShouldBeEqual() {

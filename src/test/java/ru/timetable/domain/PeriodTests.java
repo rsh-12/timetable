@@ -8,23 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.timetable.domain.util.Pair;
 import ru.timetable.domain.util.PeriodNum;
 
 public class PeriodTests {
 
-    private Period savedEntity;
-
-    @BeforeEach
-    void setUp() {
-        savedEntity = Period.builder()
-                .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair("08:30", "09:15"))
-                .secondHalf(new Pair("09:20", "10:05"))
-                .build();
-    }
+    private final Period savedEntity = Period.builder()
+            .periodNum(PeriodNum.FIRST)
+            .firstHalf(new Pair("08:30", "09:15"))
+            .secondHalf(new Pair("09:20", "10:05"))
+            .build();
 
     @Test
     public void equals_ShouldBeEqual() {
