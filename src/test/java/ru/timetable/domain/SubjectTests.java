@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.timetable.domain.util.SubjectType;
@@ -22,8 +22,8 @@ public class SubjectTests {
         savedEntity = Subject.builder()
                 .id(1)
                 .name("УП")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(Instant.now())
+                .updatedAt(Instant.now())
                 .build();
     }
 
