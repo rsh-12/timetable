@@ -24,15 +24,16 @@ public class PeriodDaoImpl implements PeriodDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String TABLE = "period";
 
     @Override
     public Optional<Period> findById(Integer id) {
         log.debug("findById: searches for a Period with id={}", id);
 
         String sql = """
-                SELECT * FROM period
+                SELECT * FROM %s
                 WHERE id = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new PeriodRowMapper(), id)
                 .stream().findFirst();
@@ -62,7 +63,12 @@ public class PeriodDaoImpl implements PeriodDao {
     @Override
     public void deleteById(Integer id) {
         log.debug("deleteById: tries to delete a Period with id={}", id);
-        jdbcTemplate.update("DELETE FROM period WHERE id = ?;", id);
+
+        String sql = """
+                DELETE FROM %s WHERE id = ?;
+                """.formatted(TABLE);
+
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -77,7 +83,7 @@ public class PeriodDaoImpl implements PeriodDao {
         log.debug("deleteAll: deletes all Periods in the DB");
 
         //noinspection SqlWithoutWhere
-        jdbcTemplate.update("DELETE FROM period;");
+        jdbcTemplate.update("DELETE FROM %s;".formatted(TABLE));
     }
 
     @Override
@@ -86,8 +92,9 @@ public class PeriodDaoImpl implements PeriodDao {
 
         String sql = """
                 SELECT COUNT(*) AS total
-                FROM period;
-                """;
+                FROM %s;
+                """.formatted(TABLE);
+
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);

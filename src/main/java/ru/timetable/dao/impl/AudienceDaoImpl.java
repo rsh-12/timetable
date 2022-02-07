@@ -16,15 +16,16 @@ import ru.timetable.domain.Audience;
 public class AudienceDaoImpl implements AudienceDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final String TABLE = "audience";
 
     @Override
     public Optional<Audience> findById(Integer id) {
         log.debug("findById: searches for an Audience with id={}", id);
 
         String sql = """
-                SELECT * FROM audience
+                SELECT * FROM %s
                 WHERE id = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new AudienceRowMapper(), id)
                 .stream().findFirst();
@@ -35,9 +36,9 @@ public class AudienceDaoImpl implements AudienceDao {
         log.debug("insert: saves the Audience to the DB");
 
         String sql = """
-                    INSERT INTO audience(number)
+                    INSERT INTO %s(number)
                     VALUES (?);
-                """;
+                """.formatted(TABLE);
 
         try {
             return jdbcTemplate.update(sql, entity.getNumber());
@@ -50,7 +51,12 @@ public class AudienceDaoImpl implements AudienceDao {
     @Override
     public void deleteById(Integer id) {
         log.debug("deleteById: tries to delete an Audience with id={}", id);
-        jdbcTemplate.update("DELETE FROM audience WHERE id = ?;", id);
+
+        String sql = """
+                DELETE FROM %s WHERE id = ?;
+                """.formatted(TABLE);
+
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class AudienceDaoImpl implements AudienceDao {
         log.debug("deleteAll: deletes all Audiences in the DB");
 
         //noinspection SqlWithoutWhere
-        jdbcTemplate.update("DELETE FROM audience;");
+        jdbcTemplate.update("DELETE FROM %s;".formatted(TABLE));
     }
 
     @Override
@@ -73,9 +79,9 @@ public class AudienceDaoImpl implements AudienceDao {
         log.debug("findByNumber: searches for an Audience with number={}", number);
 
         String sql = """
-                SELECT * FROM audience
+                SELECT * FROM %s
                 WHERE number = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new AudienceRowMapper(), number)
                 .stream().findFirst();
@@ -87,8 +93,9 @@ public class AudienceDaoImpl implements AudienceDao {
 
         String sql = """
                 SELECT COUNT(*) AS total
-                FROM audience;
-                """;
+                FROM %s;
+                """.formatted(TABLE);
+
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);

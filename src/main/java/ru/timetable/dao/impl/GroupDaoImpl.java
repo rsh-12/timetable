@@ -20,15 +20,16 @@ import ru.timetable.domain.Group;
 public class GroupDaoImpl implements GroupDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final String TABLE = "student_group";
 
     @Override
     public Optional<Group> findById(Integer id) {
         log.debug("findById: searches for a Group with id={}", id);
 
         String sql = """
-                SELECT * FROM student_group
+                SELECT * FROM %s
                 WHERE id = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new GroupRowMapper(), id)
                 .stream().findFirst();
@@ -39,9 +40,9 @@ public class GroupDaoImpl implements GroupDao {
         log.debug("insert: saves the Group to the DB");
 
         String sql = """
-                INSERT INTO student_group(name, department)
+                INSERT INTO %s(name, department)
                 VALUES (?, ?);
-                """;
+                """.formatted(TABLE);
 
         try {
             return jdbcTemplate.update(sql, entity.getName(), entity.getDepartment());
@@ -53,22 +54,55 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public void deleteById(Integer id) {
+        log.debug("deleteById: tries to delete a Group with id={}", id);
 
+        String sql = """
+                DELETE FROM %s WHERE id = ?;
+                """.formatted(TABLE);
+
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public void delete(Group entity) {
-
+        if (entity != null) {
+            deleteById(entity.getId());
+        }
     }
 
     @Override
     public void deleteAll() {
+        log.debug("deleteAll: deletes all Groups in the DB");
 
+        //noinspection SqlWithoutWhere
+        jdbcTemplate.update("DELETE FROM %s;".formatted(TABLE));
     }
 
     @Override
     public int count() {
-        return 0;
+        log.debug("count: returns the number of all Groups");
+
+        String sql = """
+                SELECT COUNT(*) AS total
+                FROM %s;
+                """.formatted("table");
+
+        Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return Optional.ofNullable(total).orElse(0);
+    }
+
+    @Override
+    public Optional<Group> findByName(String name) {
+        log.debug("findByName: searches for a Group {}", name);
+
+        String sql = """
+                SELECT * FROM %s
+                WHERE name = ?;
+                """.formatted(TABLE);
+
+        return jdbcTemplate.query(sql, new GroupRowMapper(), name)
+                .stream().findFirst();
     }
 
 }

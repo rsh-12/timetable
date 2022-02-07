@@ -21,15 +21,16 @@ import ru.timetable.domain.util.Weekday;
 public class DayDaoImpl implements DayDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final String TABLE = "day";
 
     @Override
     public Optional<Day> findById(Integer id) {
         log.debug("findById: searches for a Day with id={}", id);
 
         String sql = """
-                SELECT * FROM day
+                SELECT * FROM %s
                 WHERE id = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new DayRowMapper(), id).stream()
                 .findFirst();
@@ -40,9 +41,9 @@ public class DayDaoImpl implements DayDao {
         log.debug("insert: saves the Day to the DB");
 
         String sql = """
-                INSERT INTO day(name)
+                INSERT INTO %s(name)
                 VALUES (?);
-                """;
+                """.formatted(TABLE);
 
         try {
             return jdbcTemplate.update(sql, entity.getName().name());
@@ -55,7 +56,12 @@ public class DayDaoImpl implements DayDao {
     @Override
     public void deleteById(Integer id) {
         log.debug("deleteById: tries to delete a Day with id={}", id);
-        jdbcTemplate.update("DELETE FROM day WHERE id = ?;", id);
+
+        String sql = """
+                DELETE FROM %s WHERE id = ?;
+                """.formatted(TABLE);
+
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -70,7 +76,7 @@ public class DayDaoImpl implements DayDao {
         log.debug("deleteAll: deletes all Days in the DB");
 
         //noinspection SqlWithoutWhere
-        jdbcTemplate.update("DELETE FROM day;");
+        jdbcTemplate.update("DELETE FROM %s;".formatted(TABLE));
     }
 
     @Override
@@ -79,8 +85,9 @@ public class DayDaoImpl implements DayDao {
 
         String sql = """
                 SELECT COUNT(*) AS total
-                FROM day;
-                """;
+                FROM %s;
+                """.formatted(TABLE);
+
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
@@ -88,12 +95,12 @@ public class DayDaoImpl implements DayDao {
 
     @Override
     public Optional<Day> findByWeekday(Weekday day) {
-        log.debug("findByWeekday: searches for a Day MONDAY{}", day.name());
+        log.debug("findByWeekday: searches for a Day {}", day.name());
 
         String sql = """
-                SELECT * FROM day
+                SELECT * FROM %s
                 WHERE name = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new DayRowMapper(), day.name())
                 .stream().findFirst();

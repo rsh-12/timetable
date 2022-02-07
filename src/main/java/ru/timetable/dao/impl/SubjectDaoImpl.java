@@ -21,15 +21,16 @@ import ru.timetable.domain.util.SubjectType;
 public class SubjectDaoImpl implements SubjectDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final String TABLE = "subject";
 
     @Override
     public Optional<Subject> findById(Integer id) {
         log.debug("findById: searches for a Subject with id={}", id);
 
         String sql = """
-                SELECT * FROM subject
+                SELECT * FROM %s
                 WHERE id = ?;
-                """;
+                """.formatted(TABLE);
 
         return jdbcTemplate.query(sql, new SubjectRowMapper(), id).stream()
                 .findFirst();
@@ -56,7 +57,12 @@ public class SubjectDaoImpl implements SubjectDao {
     @Override
     public void deleteById(Integer id) {
         log.debug("deleteById: tries to delete a Subject with id={}", id);
-        jdbcTemplate.update("DELETE FROM subject WHERE id = ?;", id);
+
+        String sql = """
+                DELETE FROM %s WHERE id = ?;
+                """.formatted(TABLE);
+
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -71,7 +77,7 @@ public class SubjectDaoImpl implements SubjectDao {
         log.warn("deleteAll: deletes all Subjects in the DB");
 
         //noinspection SqlWithoutWhere
-        jdbcTemplate.update("DELETE FROM subject;");
+        jdbcTemplate.update("DELETE FROM %s;".formatted(TABLE));
     }
 
     @Override
@@ -80,13 +86,13 @@ public class SubjectDaoImpl implements SubjectDao {
 
         String sql = """
                 SELECT COUNT(*) AS total
-                FROM subject;
-                """;
+                FROM %s;
+                """.formatted(TABLE);
+
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
     }
-
 
     @Override
     public Optional<Subject> findByNameAndSubjectType(String name, SubjectType subjectType) {
