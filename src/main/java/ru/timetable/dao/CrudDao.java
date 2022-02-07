@@ -12,6 +12,9 @@ public interface CrudDao<T> {
 
     void delete(T entity);
 
+    /**
+     * Warning! Deletes all records from the table.
+     */
     void deleteAll();
 
     int count();
