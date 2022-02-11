@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.Optional;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -33,6 +36,43 @@ class GroupDaoTests extends PostgreSqlTestBase {
 
         savedEntity = dao.findByName("ПО-316").orElse(null);
         assertNotNull(savedEntity);
+    }
+
+    @Test
+    public void findById_ShouldReturnSavedEntity() {
+        assertEquals(Optional.of(savedEntity), dao.findById(savedEntity.getId()));
+    }
+
+    @Test
+    public void deleteById() {
+        dao.deleteById(savedEntity.getId());
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void delete() {
+        dao.delete(savedEntity);
+        assertEquals(0, dao.count());
+    }
+
+    @Test
+    public void deleteById_ShouldNotFail() {
+        dao.deleteById(null);
+        dao.deleteById(savedEntity.getId());
+        dao.deleteById(savedEntity.getId());
+    }
+
+    @Test
+    public void delete_ShouldNotFail() {
+        dao.delete(null);
+        dao.delete(savedEntity);
+        dao.delete(savedEntity);
+    }
+
+    @Test
+    public void insert_DuplicateKeyException_ShouldReturn0() {
+        int result = dao.insert(savedEntity);
+        Assumptions.assumeTrue(result == 0);
     }
 
 }
