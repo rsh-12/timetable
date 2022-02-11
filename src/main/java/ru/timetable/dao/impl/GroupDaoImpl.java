@@ -85,7 +85,7 @@ public class GroupDaoImpl implements GroupDao {
         String sql = """
                 SELECT COUNT(*) AS total
                 FROM %s;
-                """.formatted("table");
+                """.formatted(TABLE);
 
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
