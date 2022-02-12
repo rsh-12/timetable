@@ -40,7 +40,7 @@ public class TeacherDaoImpl implements TeacherDao {
         log.debug("insert: saves the Teacher to the DB");
 
         String sql = """
-                INSERT INTO teacher(last_name, first_name, middle_name,gender, email, phone)
+                INSERT INTO teacher(last_name, first_name, middle_name, gender, email, phone)
                 VALUES (?, ?, ?, ?, ?, ?);
                 """;
 
