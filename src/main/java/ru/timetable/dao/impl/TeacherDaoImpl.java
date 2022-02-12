@@ -40,8 +40,8 @@ public class TeacherDaoImpl implements TeacherDao {
         log.debug("insert: saves the Teacher to the DB");
 
         String sql = """
-                INSERT INTO teacher(last_name, first_name, middle_name, email, phone) 
-                VALUES (?,?,?,?,?)
+                INSERT INTO teacher(last_name, first_name, middle_name,gender, email, phone)
+                VALUES (?, ?, ?, ?, ?, ?);
                 """;
 
         try {
@@ -49,6 +49,7 @@ public class TeacherDaoImpl implements TeacherDao {
                     entity.getLastName(),
                     entity.getFirstName(),
                     entity.getMiddleName(),
+                    entity.getGender().name(),
                     entity.getEmail(),
                     entity.getPhone());
         } catch (DuplicateKeyException e) {
