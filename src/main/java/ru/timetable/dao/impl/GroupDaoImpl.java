@@ -8,6 +8,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.GroupDao;
@@ -90,6 +92,11 @@ public class GroupDaoImpl implements GroupDao {
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
+    }
+
+    @Override
+    public Page<Group> findAll(Pageable pageable) {
+        return null;
     }
 
     @Override

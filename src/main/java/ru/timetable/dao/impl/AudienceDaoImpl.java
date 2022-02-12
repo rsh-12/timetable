@@ -1,9 +1,14 @@
 package ru.timetable.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.timetable.dao.AudienceDao;
@@ -99,6 +104,29 @@ public class AudienceDaoImpl implements AudienceDao {
         Integer total = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return Optional.ofNullable(total).orElse(0);
+    }
+
+    @Override
+    public Page<Audience> findAll(Pageable pageable) {
+        log.debug("findAll: ");
+
+/*
+        String orderBy = pageable.getSort().get()
+                .map(order -> order.getProperty() + " " + order.getDirection().name())
+                .collect(Collectors.joining(", "));
+*/
+
+        // todo: implement sorting
+        String sql = """
+                SELECT *
+                FROM audience
+                LIMIT %d
+                OFFSET %d
+                """.formatted(pageable.getPageSize(), pageable.getOffset());
+
+        List<Audience> result = jdbcTemplate.query(sql, new AudienceRowMapper());
+
+        return new PageImpl<>(result, pageable, count());
     }
 
 }

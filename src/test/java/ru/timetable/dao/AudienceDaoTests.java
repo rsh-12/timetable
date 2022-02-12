@@ -8,12 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Audience;
@@ -60,7 +65,7 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
     }
 
     @Test
-    public void delete() throws InterruptedException {
+    public void delete() {
         dao.delete(savedEntity);
         assertEquals(0, dao.count());
     }
@@ -82,6 +87,24 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
     @Test
     public void insert_ExistingEntity_ShouldReturn0() {
         assertEquals(0, dao.insert(savedEntity));
+    }
+
+    @Test
+    public void findAll() {
+        IntStream.rangeClosed(102, 111)
+                .mapToObj(String::valueOf)
+                .forEach(audience -> dao.insert(new Audience(audience)));
+
+        int total = dao.count();
+        assertEquals(11, total); // +savedEntity
+
+        Page<Audience> result = dao.findAll(PageRequest.of(0, 5, Sort.by(Direction.ASC, "number")));
+        assertEquals(total, result.getTotalElements());
+
+        assertEquals(3, result.getTotalPages());
+        assertEquals(5, result.getSize());
+
+        result.getContent().forEach(audience -> System.out.println(audience.getNumber()));
     }
 
 }
