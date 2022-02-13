@@ -17,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Audience;
@@ -98,13 +96,11 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
         int total = dao.count();
         assertEquals(11, total); // +savedEntity
 
-        Page<Audience> result = dao.findAll(PageRequest.of(0, 5, Sort.by(Direction.ASC, "number")));
+        Page<Audience> result = dao.findAll(PageRequest.of(0, 5));
         assertEquals(total, result.getTotalElements());
 
         assertEquals(3, result.getTotalPages());
         assertEquals(5, result.getSize());
-
-        result.getContent().forEach(audience -> System.out.println(audience.getNumber()));
     }
 
 }
