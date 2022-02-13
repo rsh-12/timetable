@@ -113,10 +113,10 @@ public class AudienceDaoImpl implements AudienceDao {
         // todo: implement sorting
         String sql = """
                 SELECT *
-                FROM audience
+                FROM %s
                 LIMIT %d
                 OFFSET %d
-                """.formatted(pageable.getPageSize(), pageable.getOffset());
+                """.formatted(TABLE, pageable.getPageSize(), pageable.getOffset());
 
         List<Audience> result = jdbcTemplate.query(sql, new AudienceRowMapper());
 
