@@ -118,9 +118,9 @@ public class AudienceDaoImpl implements AudienceDao {
                 OFFSET %d
                 """.formatted(TABLE, pageable.getPageSize(), pageable.getOffset());
 
-        List<Audience> result = jdbcTemplate.query(sql, new AudienceRowMapper());
+        List<Audience> audiences = jdbcTemplate.query(sql, new AudienceRowMapper());
 
-        return new PageImpl<>(result, pageable, count());
+        return new PageImpl<>(audiences, pageable, count());
     }
 
 }
