@@ -2,7 +2,6 @@ package ru.timetable.dao.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -108,13 +107,8 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     public Page<Audience> findAll(Pageable pageable) {
-        log.debug("findAll: ");
-
-/*
-        String orderBy = pageable.getSort().get()
-                .map(order -> order.getProperty() + " " + order.getDirection().name())
-                .collect(Collectors.joining(", "));
-*/
+        log.debug("findAll: returns entities by pageable: size={}, offset={}",
+                pageable.getPageSize(), pageable.getOffset());
 
         // todo: implement sorting
         String sql = """
