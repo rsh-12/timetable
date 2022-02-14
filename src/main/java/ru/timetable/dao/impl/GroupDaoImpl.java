@@ -4,11 +4,13 @@ package ru.timetable.dao.impl;
  * Time: 1:24 PM
  * */
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -96,7 +98,20 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public Page<Group> findAll(Pageable pageable) {
-        return null;
+        log.debug("findAll: returns entities by pageable: size={}, offset={}",
+                pageable.getPageSize(), pageable.getOffset());
+
+        // todo: implement sorting
+        String sql = """
+                SELECT *
+                FROM %s
+                LIMIT %d
+                OFFSET %d
+                """.formatted(TABLE, pageable.getPageSize(), pageable.getOffset());
+
+        List<Group> groups = jdbcTemplate.query(sql, new GroupRowMapper());
+
+        return new PageImpl<>(groups, pageable, count());
     }
 
     @Override
