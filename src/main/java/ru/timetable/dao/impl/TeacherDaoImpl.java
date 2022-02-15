@@ -121,4 +121,30 @@ public class TeacherDaoImpl implements TeacherDao {
 
     }
 
+    @Override
+    public Optional<Teacher> findByEmail(String email) {
+        log.debug("findByEmail: searches for a Teacher with email={}", email);
+
+        String sql = """
+                SELECT * FROM %s
+                WHERE email = ?;
+                """.formatted(TABLE);
+
+        return jdbcTemplate.query(sql, new TeacherRowMapper(), email)
+                .stream().findFirst();
+    }
+
+    @Override
+    public Optional<Teacher> findByPhone(String phone) {
+        log.debug("findByEmail: searches for a Teacher with phone={}", phone);
+
+        String sql = """
+                SELECT * FROM %s
+                WHERE phone = ?;
+                """.formatted(TABLE);
+
+        return jdbcTemplate.query(sql, new TeacherRowMapper(), phone)
+                .stream().findFirst();
+    }
+
 }
