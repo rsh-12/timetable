@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,9 +90,10 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
 
     @Test
     public void findAll() {
+        Consumer<String> consumer = s -> dao.insert(new Audience(s));
         IntStream.rangeClosed(102, 111)
                 .mapToObj(String::valueOf)
-                .forEach(audience -> dao.insert(new Audience(audience)));
+                .forEach(consumer);
 
         int total = dao.count();
         assertEquals(11, total); // +savedEntity
