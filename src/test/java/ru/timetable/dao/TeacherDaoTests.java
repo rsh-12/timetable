@@ -36,8 +36,10 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
                 .lastName("Волков")
                 .firstName("Егор")
                 .middleName("Михайлович")
+                .email("volkov@mail.ru")
                 .gender(Gender.MALE)
                 .build();
+
         int result = dao.insert(entity);
         assertEquals(1, result);
     }
