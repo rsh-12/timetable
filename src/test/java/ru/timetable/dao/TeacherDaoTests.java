@@ -5,9 +5,12 @@ package ru.timetable.dao;
  * */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -42,6 +45,15 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
 
         int result = dao.insert(entity);
         assertEquals(1, result);
+
+        Optional<Teacher> optional = dao.findByEmail("volkov@mail.ru");
+        assertTrue(optional.isPresent());
+        savedEntity = optional.get();
+    }
+
+    @Test
+    public void findByEmail_ShouldReturnOptionalEmpty() {
+        assertTrue(dao.findByEmail("some@mail.com").isEmpty());
     }
 
 }
