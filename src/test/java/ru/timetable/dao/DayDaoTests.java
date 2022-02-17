@@ -5,10 +5,12 @@ package ru.timetable.dao;
  * */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Day;
@@ -59,11 +62,6 @@ public class DayDaoTests extends PostgreSqlTestBase {
         assertEquals(expectedQuantity, actualQuantity);
     }
 
-    public void fillTable() {
-        Arrays.stream(Weekday.values()).map(Day::new)
-                .forEach(day -> dao.insert(day));
-    }
-
     @Test
     public void deleteById() {
         dao.deleteById(savedEntity.getId());
@@ -94,6 +92,21 @@ public class DayDaoTests extends PostgreSqlTestBase {
     public void insert_DuplicateKeyException_ShouldReturn0() {
         int result = dao.insert(savedEntity);
         Assumptions.assumeTrue(result == 0);
+    }
+
+    // Sorting has not been implemented yet
+    @Test
+    public void findAll_ShouldReturnOneEntity() {
+        fillTable();
+
+        List<Day> entities = dao.findAll(PageRequest.of(0, 3)).getContent();
+        assertFalse(entities.isEmpty());
+        assertEquals(3, entities.size());
+    }
+
+    private void fillTable() {
+        Arrays.stream(Weekday.values()).map(Day::new)
+                .forEach(day -> dao.insert(day));
     }
 
 }
