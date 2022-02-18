@@ -24,7 +24,7 @@ import ru.timetable.domain.Group;
 public class GroupDaoImpl implements GroupDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String TABLE = "student_group";
+    private final String TABLE = "\"group\"";
 
     @Override
     public Optional<Group> findById(Integer id) {
