@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import ru.timetable.domain.util.Gender;
 
+
 @Getter
 @Setter
 @Builder
@@ -73,7 +74,10 @@ public class Teacher {
         if (!firstName.equals(teacher.firstName)) {
             return false;
         }
-        return middleName.equals(teacher.middleName);
+        if (!middleName.equals(teacher.middleName)) {
+            return false;
+        }
+        return gender == teacher.gender;
     }
 
     @Override
