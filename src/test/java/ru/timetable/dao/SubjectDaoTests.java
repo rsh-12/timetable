@@ -71,4 +71,11 @@ class SubjectDaoTests extends PostgreSqlTestBase {
         dao.delete(savedEntity);
     }
 
+    @Test
+    public void insert_DuplicateKeyException_ShouldReturn0() {
+        int totalEntities = dao.count();
+        assertEquals(0, dao.insert(savedEntity));
+        assertEquals(totalEntities, dao.count());
+    }
+
 }
