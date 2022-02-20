@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Subject;
@@ -76,6 +79,21 @@ class SubjectDaoTests extends PostgreSqlTestBase {
         int totalEntities = dao.count();
         assertEquals(0, dao.insert(savedEntity));
         assertEquals(totalEntities, dao.count());
+    }
+
+    @Test
+    public void findAll() {
+        assertEquals(1, dao.count());
+
+        Stream.of("ТРПО", "1С", "Физ-ра", "Мат. методы")
+                .map(Subject::new)
+                .forEach(subject -> dao.insert(subject));
+
+        assertEquals(5, dao.count());
+
+        Page<Subject> page = dao.findAll(PageRequest.of(0, 3));
+        assertEquals(2, page.getTotalPages());
+        assertEquals(3, page.getSize());
     }
 
 }
