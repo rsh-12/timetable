@@ -36,6 +36,11 @@ public class Subject {
 
     private Instant updatedAt;
 
+    public Subject(@NonNull String name) {
+        this.name = name;
+        this.type = SubjectType.LECTURE;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
