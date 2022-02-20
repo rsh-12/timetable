@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,8 +80,12 @@ class GroupDaoTests extends PostgreSqlTestBase {
 
     @Test
     public void findAll() {
-        List.of("ОЗИ-304", "МД-268", "ЗО-325", "ПР-360")
-                .forEach(group -> dao.insert(new Group(group)));
+        assertEquals(1, dao.count());
+
+        Stream.of("ОЗИ-304", "МД-268", "ЗО-325", "ПР-360")
+                .map(Group::new)
+                .forEach(group -> dao.insert(group));
+
         assertEquals(5, dao.count());
 
         Page<Group> page = dao.findAll(PageRequest.of(0, 3));
