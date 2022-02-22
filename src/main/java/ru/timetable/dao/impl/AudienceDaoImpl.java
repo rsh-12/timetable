@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.AudienceDao;
 import ru.timetable.dao.mappers.AudienceRowMapper;
 import ru.timetable.domain.Audience;
@@ -89,6 +90,19 @@ public class AudienceDaoImpl implements AudienceDao {
 
         return jdbcTemplate.query(sql, new AudienceRowMapper(), number)
                 .stream().findFirst();
+    }
+
+    @Override
+    @Transactional
+    public int[][] insertAll(List<Audience> audiences) {
+        log.debug("");
+
+        String sql = """
+                INSERT INTO audience(number) VALUES (?)
+                """;
+
+        return jdbcTemplate.batchUpdate(sql, audiences, audiences.size(), (ps, argument) ->
+                ps.setString(1, argument.getNumber()));
     }
 
     @Override
