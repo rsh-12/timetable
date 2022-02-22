@@ -6,4 +6,9 @@
   <root level="INFO">
     <appender-ref ref="CONSOLE"/>
   </root>
+
+  <logger name="ru.timetable" level="debug">
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+
 </configuration>
