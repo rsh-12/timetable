@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,6 +104,20 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
 
         assertEquals(3, result.getTotalPages());
         assertEquals(5, result.getSize());
+    }
+
+    @Test
+    public void insertAll() {
+        int before = dao.count();
+
+        List<Audience> audiences = IntStream.range(100, 105)
+                .mapToObj(String::valueOf)
+                .map(Audience::new)
+                .toList();
+
+        dao.insertAll(audiences);
+
+        assertEquals(audiences.size() + before, dao.count());
     }
 
 }
