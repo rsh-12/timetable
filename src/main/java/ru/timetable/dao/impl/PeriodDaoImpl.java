@@ -4,8 +4,6 @@ package ru.timetable.dao.impl;
  * Time: 6:39 AM
  * */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +19,7 @@ import ru.timetable.dao.PeriodDao;
 import ru.timetable.dao.mappers.PeriodRowMapper;
 import ru.timetable.domain.Period;
 import ru.timetable.domain.util.PeriodNum;
+import ru.timetable.util.ServiceUtil;
 
 @Slf4j
 @Repository
@@ -28,7 +27,7 @@ import ru.timetable.domain.util.PeriodNum;
 public class PeriodDaoImpl implements PeriodDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ServiceUtil util;
     private final String TABLE = "period";
 
     @Override
@@ -55,11 +54,11 @@ public class PeriodDaoImpl implements PeriodDao {
 
         try {
             int periodNum = entity.getPeriodNum().getAsInt();
-            String firstHalf = objectMapper.writeValueAsString(entity.getFirstHalf());
-            String secondHalf = objectMapper.writeValueAsString(entity.getSecondHalf());
+            String firstHalf = util.toJsonString(entity.getFirstHalf());
+            String secondHalf = util.toJsonString(entity.getSecondHalf());
 
             return jdbcTemplate.update(sql, periodNum, firstHalf, secondHalf);
-        } catch (DuplicateKeyException | JsonProcessingException e) {
+        } catch (DuplicateKeyException e) {
             log.warn(e.getCause().getMessage());
             return 0;
         }
@@ -126,6 +125,18 @@ public class PeriodDaoImpl implements PeriodDao {
     @Override
     @Transactional
     public void insertAll(List<Period> entities) {
+        log.debug("insertAll: inserts multiple entities");
+
+        String sql = """
+                INSERT INTO period(period_num, first_half, second_half)
+                VALUES (?, ? :: jsonb, ? :: jsonb);
+                """;
+
+        jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
+            ps.setInt(1, argument.getPeriodNum().getAsInt());
+            ps.setObject(2, util.toJsonString(argument.getFirstHalf()));
+            ps.setObject(3, util.toJsonString(argument.getSecondHalf()));
+        });
     }
 
     @Override
