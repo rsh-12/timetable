@@ -94,14 +94,14 @@ public class AudienceDaoImpl implements AudienceDao {
 
     @Override
     @Transactional
-    public int[][] insertAll(List<Audience> audiences) {
+    public void insertAll(List<Audience> entities) {
         log.debug("");
 
         String sql = """
                 INSERT INTO audience(number) VALUES (?)
                 """;
 
-        return jdbcTemplate.batchUpdate(sql, audiences, audiences.size(), (ps, argument) ->
+        jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) ->
                 ps.setString(1, argument.getNumber()));
     }
 
