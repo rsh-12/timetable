@@ -95,7 +95,7 @@ public class AudienceDaoImpl implements AudienceDao {
     @Override
     @Transactional
     public void insertAll(List<Audience> entities) {
-        log.debug("");
+        log.debug("insertAll: inserts multiple entities");
 
         String sql = """
                 INSERT INTO audience(number) VALUES (?)
