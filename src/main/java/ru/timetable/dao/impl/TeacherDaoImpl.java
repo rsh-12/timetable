@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.TeacherDao;
 import ru.timetable.dao.mappers.TeacherRowMapper;
 import ru.timetable.domain.Teacher;
@@ -119,6 +120,11 @@ public class TeacherDaoImpl implements TeacherDao {
 
         return new PageImpl<>(teachers, pageable, count());
 
+    }
+
+    @Override
+    @Transactional
+    public void insertAll(List<Teacher> entities) {
     }
 
     @Override

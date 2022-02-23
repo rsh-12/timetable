@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.GroupDao;
 import ru.timetable.dao.mappers.GroupRowMapper;
 import ru.timetable.domain.Group;
@@ -112,6 +113,11 @@ public class GroupDaoImpl implements GroupDao {
         List<Group> groups = jdbcTemplate.query(sql, new GroupRowMapper());
 
         return new PageImpl<>(groups, pageable, count());
+    }
+
+    @Override
+    @Transactional
+    public void insertAll(List<Group> entities) {
     }
 
     @Override

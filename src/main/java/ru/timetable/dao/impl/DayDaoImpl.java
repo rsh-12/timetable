@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.DayDao;
 import ru.timetable.dao.mappers.DayRowMapper;
 import ru.timetable.domain.Day;
@@ -113,6 +114,11 @@ public class DayDaoImpl implements DayDao {
         List<Day> days = jdbcTemplate.query(sql, new DayRowMapper());
 
         return new PageImpl<>(days, pageable, count());
+    }
+
+    @Override
+    @Transactional
+    public void insertAll(List<Day> entities) {
     }
 
     @Override

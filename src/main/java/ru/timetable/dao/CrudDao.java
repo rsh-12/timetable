@@ -1,5 +1,6 @@
 package ru.timetable.dao;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +23,7 @@ public interface CrudDao<T> {
     int count();
 
     Page<T> findAll(Pageable pageable);
+
+    void insertAll(List<T> entities);
 
 }

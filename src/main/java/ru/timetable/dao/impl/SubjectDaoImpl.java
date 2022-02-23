@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.SubjectDao;
 import ru.timetable.dao.mappers.SubjectRowMapper;
 import ru.timetable.domain.Subject;
@@ -114,6 +115,11 @@ public class SubjectDaoImpl implements SubjectDao {
         List<Subject> subjects = jdbcTemplate.query(sql, new SubjectRowMapper());
 
         return new PageImpl<>(subjects, pageable, count());
+    }
+
+    @Override
+    @Transactional
+    public void insertAll(List<Subject> entities) {
     }
 
     @Override
