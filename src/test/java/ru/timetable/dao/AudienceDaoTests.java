@@ -120,4 +120,14 @@ public class AudienceDaoTests extends PostgreSqlTestBase {
         assertEquals(audiences.size() + before, dao.count());
     }
 
+    @Test
+    public void insertAll_ShouldRollbackTransaction() {
+        int before = dao.count();
+
+        List<Audience> audiences = List.of(new Audience("Gym"), savedEntity);
+        dao.insertAll(audiences);
+
+        assertEquals(before, dao.count());
+    }
+
 }
