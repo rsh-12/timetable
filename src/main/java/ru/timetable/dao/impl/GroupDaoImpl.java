@@ -5,10 +5,10 @@ package ru.timetable.dao.impl;
  * */
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.GroupDao;
 import ru.timetable.dao.mappers.GroupRowMapper;
 import ru.timetable.domain.Group;
+import ru.timetable.util.ServiceUtil;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
 public class GroupDaoImpl implements GroupDao {
 
+    private final ServiceUtil util;
     private final JdbcTemplate jdbcTemplate;
     private final String TABLE = "\"group\"";
 
@@ -49,12 +51,10 @@ public class GroupDaoImpl implements GroupDao {
                 VALUES (?, ?);
                 """.formatted(TABLE);
 
-        try {
-            return jdbcTemplate.update(sql, entity.getName(), entity.getDepartment());
-        } catch (DuplicateKeyException e) {
-            log.warn(e.getCause().getMessage());
-            return 0;
-        }
+        Integer result = util.handleDuplicateKeyException(() ->
+                jdbcTemplate.update(sql, entity.getName(), entity.getDepartment()));
+
+        return Objects.requireNonNullElse(result, 0);
     }
 
     @Override

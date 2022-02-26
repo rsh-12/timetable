@@ -5,10 +5,10 @@ package ru.timetable.dao.impl;
  * */
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.TeacherDao;
 import ru.timetable.dao.mappers.TeacherRowMapper;
 import ru.timetable.domain.Teacher;
+import ru.timetable.util.ServiceUtil;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
 public class TeacherDaoImpl implements TeacherDao {
 
+    private final ServiceUtil util;
     private final JdbcTemplate jdbcTemplate;
     private final String TABLE = "teacher";
 
@@ -49,18 +51,15 @@ public class TeacherDaoImpl implements TeacherDao {
                 VALUES (?, ?, ?, ?, ?, ?);
                 """;
 
-        try {
-            return jdbcTemplate.update(sql,
-                    entity.getLastName(),
-                    entity.getFirstName(),
-                    entity.getMiddleName(),
-                    entity.getGender().name(),
-                    entity.getEmail(),
-                    entity.getPhone());
-        } catch (DuplicateKeyException e) {
-            log.warn(e.getCause().getMessage());
-            return 0;
-        }
+        Integer result = util.handleDuplicateKeyException(() -> jdbcTemplate.update(sql,
+                entity.getLastName(),
+                entity.getFirstName(),
+                entity.getMiddleName(),
+                entity.getGender().name(),
+                entity.getEmail(),
+                entity.getPhone()));
+
+        return Objects.requireNonNullElse(result, 0);
     }
 
     @Override

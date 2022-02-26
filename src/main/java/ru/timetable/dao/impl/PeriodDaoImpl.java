@@ -5,10 +5,10 @@ package ru.timetable.dao.impl;
  * */
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +26,8 @@ import ru.timetable.util.ServiceUtil;
 @RequiredArgsConstructor
 public class PeriodDaoImpl implements PeriodDao {
 
-    private final JdbcTemplate jdbcTemplate;
     private final ServiceUtil util;
+    private final JdbcTemplate jdbcTemplate;
     private final String TABLE = "period";
 
     @Override
@@ -52,16 +52,14 @@ public class PeriodDaoImpl implements PeriodDao {
                 VALUES (?, ? :: jsonb, ? :: jsonb);
                 """;
 
-        try {
-            int periodNum = entity.getPeriodNum().getAsInt();
-            String firstHalf = util.toJsonString(entity.getFirstHalf());
-            String secondHalf = util.toJsonString(entity.getSecondHalf());
+        int periodNum = entity.getPeriodNum().getAsInt();
+        String firstHalf = util.toJsonString(entity.getFirstHalf());
+        String secondHalf = util.toJsonString(entity.getSecondHalf());
 
-            return jdbcTemplate.update(sql, periodNum, firstHalf, secondHalf);
-        } catch (DuplicateKeyException e) {
-            log.warn(e.getCause().getMessage());
-            return 0;
-        }
+        Integer result = util.handleDuplicateKeyException(() ->
+                jdbcTemplate.update(sql, periodNum, firstHalf, secondHalf));
+
+        return Objects.requireNonNullElse(result, 0);
     }
 
     @Override

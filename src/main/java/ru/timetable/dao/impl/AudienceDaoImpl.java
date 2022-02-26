@@ -1,6 +1,7 @@
 package ru.timetable.dao.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,16 +11,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.AudienceDao;
 import ru.timetable.dao.mappers.AudienceRowMapper;
 import ru.timetable.domain.Audience;
+import ru.timetable.util.ServiceUtil;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
 public class AudienceDaoImpl implements AudienceDao {
 
+    private final ServiceUtil util;
     private final JdbcTemplate jdbcTemplate;
     private final String TABLE = "audience";
 
@@ -45,13 +47,12 @@ public class AudienceDaoImpl implements AudienceDao {
                     VALUES (?);
                 """.formatted(TABLE);
 
-        try {
-            return jdbcTemplate.update(sql, entity.getNumber());
-        } catch (DuplicateKeyException e) {
-            log.warn(e.getCause().getMessage());
-            return 0;
-        }
+        Integer result = util.handleDuplicateKeyException(
+                () -> jdbcTemplate.update(sql, entity.getNumber()));
+
+        return Objects.requireNonNullElse(result, 0);
     }
+
 
     @Override
     public void deleteById(Integer id) {
@@ -93,16 +94,16 @@ public class AudienceDaoImpl implements AudienceDao {
     }
 
     @Override
-    @Transactional
-    public void insertAll(List<Audience> entities) {
+    public void insertAll(List<Audience> entities) throws DuplicateKeyException {
         log.debug("insertAll: inserts multiple entities");
 
         String sql = """
                 INSERT INTO audience(number) VALUES (?)
                 """;
 
-        jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) ->
-                ps.setString(1, argument.getNumber()));
+        util.handleDuplicateKeyException(() -> jdbcTemplate
+                .batchUpdate(sql, entities, entities.size(), (ps, argument) ->
+                        ps.setString(1, argument.getNumber())));
     }
 
     @Override
