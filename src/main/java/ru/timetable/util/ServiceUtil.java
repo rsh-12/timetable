@@ -6,9 +6,13 @@ package ru.timetable.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import ru.timetable.domain.util.Pair;
 
+@Slf4j
 @Component
 public class ServiceUtil {
 
@@ -21,6 +25,15 @@ public class ServiceUtil {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException("Internal Server Error");
+        }
+    }
+
+    public  <T> T handleDuplicateKeyException(Supplier<T> supplier) {
+        try {
+            return supplier.get();
+        } catch (DuplicateKeyException e) {
+            log.error(e.getCause().getMessage());
+            return null;
         }
     }
 
