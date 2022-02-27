@@ -8,7 +8,7 @@ import ru.timetable.domain.Period;
 import ru.timetable.domain.util.Pair;
 import ru.timetable.domain.util.PeriodNum;
 
-public class ShoretenedPeriodFactory extends PeriodFactory {
+public class ShortenedPeriodFactory extends PeriodFactory {
 
     @Override
     protected Period createPeriod(PeriodNum num) {
