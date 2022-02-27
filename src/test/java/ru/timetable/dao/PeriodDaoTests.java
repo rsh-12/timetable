@@ -17,7 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Period;
-import ru.timetable.domain.util.Pair;
+import ru.timetable.domain.factory.CommonPeriodFactory;
+import ru.timetable.domain.factory.PeriodFactory;
 import ru.timetable.domain.util.PeriodNum;
 
 @SpringBootTest
@@ -35,11 +36,8 @@ public class PeriodDaoTests extends PostgreSqlTestBase {
         dao.deleteAll();
         assertEquals(0, dao.count());
 
-        savedEntity = Period.builder()
-                .periodNum(PeriodNum.FIRST)
-                .firstHalf(new Pair("08:30", "09:15"))
-                .secondHalf(new Pair("09:20", "10:05"))
-                .build();
+        PeriodFactory factory = new CommonPeriodFactory();
+        savedEntity = factory.getPeriod(PeriodNum.FIRST);
 
         int result = dao.insert(savedEntity);
         assertEquals(1, result);
