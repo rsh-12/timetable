@@ -37,6 +37,13 @@ public class Period {
     @NonNull
     private Pair secondHalf;
 
+    public Period(@NonNull PeriodNum periodNum, @NonNull Pair firstHalf,
+            @NonNull Pair secondHalf) {
+        this.periodNum = periodNum;
+        this.firstHalf = firstHalf;
+        this.secondHalf = secondHalf;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -63,6 +70,15 @@ public class Period {
         result = 31 * result + firstHalf.hashCode();
         result = 31 * result + secondHalf.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Period{" +
+                "periodNum=" + periodNum +
+                ", firstHalf=" + firstHalf +
+                ", secondHalf=" + secondHalf +
+                '}';
     }
 
 }
