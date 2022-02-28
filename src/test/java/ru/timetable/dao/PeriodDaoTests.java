@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Period;
@@ -102,6 +104,17 @@ public class PeriodDaoTests extends PostgreSqlTestBase {
         int before = dao.count();
         dao.insertAll(getPeriods(0));
         assertEquals(before, dao.count());
+    }
+
+    @Test
+    public void findAll() {
+        assertEquals(1, dao.count());
+        dao.insertAll(getPeriods(1));
+        assertEquals(6, dao.count());
+
+        Page<Period> page = dao.findAll(PageRequest.of(0, 3));
+        assertEquals(2, page.getTotalPages());
+        assertEquals(3, page.getSize());
     }
 
     private List<Period> getPeriods(int skip) {
