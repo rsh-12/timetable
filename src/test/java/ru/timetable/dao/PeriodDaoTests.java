@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +86,21 @@ public class PeriodDaoTests extends PostgreSqlTestBase {
         int totalEntities = dao.count();
         assertEquals(0, dao.insert(savedEntity));
         assertEquals(totalEntities, dao.count());
+    }
+
+    @Test
+    public void insertAll() {
+        int before = dao.count();
+
+        PeriodFactory factory = new CommonPeriodFactory();
+        List<Period> periods = Arrays.stream(PeriodNum.values())
+                .map(factory::getPeriod)
+                .skip(1).toList();
+
+        dao.insertAll(periods);
+
+        assertEquals(before + periods.size(), PeriodNum.values().length);
+        assertEquals(before + periods.size(), dao.count());
     }
 
 }
