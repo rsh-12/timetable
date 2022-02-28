@@ -130,11 +130,12 @@ public class PeriodDaoImpl implements PeriodDao {
                 VALUES (?, ? :: jsonb, ? :: jsonb);
                 """;
 
-        jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
-            ps.setInt(1, argument.getPeriodNum().getAsInt());
-            ps.setObject(2, util.toJsonString(argument.getFirstHalf()));
-            ps.setObject(3, util.toJsonString(argument.getSecondHalf()));
-        });
+        util.handleDuplicateKeyException(
+                () -> jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
+                    ps.setInt(1, argument.getPeriodNum().getAsInt());
+                    ps.setObject(2, util.toJsonString(argument.getFirstHalf()));
+                    ps.setObject(3, util.toJsonString(argument.getSecondHalf()));
+                }));
     }
 
     @Override

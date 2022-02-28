@@ -91,16 +91,24 @@ public class PeriodDaoTests extends PostgreSqlTestBase {
     @Test
     public void insertAll() {
         int before = dao.count();
+        dao.insertAll(getPeriods(1));
 
+        assertEquals(before + getPeriods(1).size(), PeriodNum.values().length);
+        assertEquals(before + getPeriods(1).size(), dao.count());
+    }
+
+    @Test
+    public void insertAll_DuplicateKeyException() {
+        int before = dao.count();
+        dao.insertAll(getPeriods(0));
+        assertEquals(before, dao.count());
+    }
+
+    private List<Period> getPeriods(int skip) {
         PeriodFactory factory = new CommonPeriodFactory();
-        List<Period> periods = Arrays.stream(PeriodNum.values())
+        return Arrays.stream(PeriodNum.values())
                 .map(factory::getPeriod)
-                .skip(1).toList();
-
-        dao.insertAll(periods);
-
-        assertEquals(before + periods.size(), PeriodNum.values().length);
-        assertEquals(before + periods.size(), dao.count());
+                .skip(skip).toList();
     }
 
 }
