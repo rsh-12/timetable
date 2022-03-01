@@ -5,10 +5,10 @@ package ru.timetable.dao.impl;
  * */
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,15 +51,20 @@ public class TeacherDaoImpl implements TeacherDao {
                 VALUES (?, ?, ?, ?, ?, ?);
                 """;
 
-        Integer result = util.handleDuplicateKeyException(() -> jdbcTemplate.update(sql,
-                entity.getLastName(),
-                entity.getFirstName(),
-                entity.getMiddleName(),
-                entity.getGender().name(),
-                entity.getEmail(),
-                entity.getPhone()));
+        int result = 0;
+        try {
+            result = jdbcTemplate.update(sql,
+                    entity.getLastName(),
+                    entity.getFirstName(),
+                    entity.getMiddleName(),
+                    entity.getGender().name(),
+                    entity.getEmail(),
+                    entity.getPhone());
+        } catch (DataIntegrityViolationException e) {
+            log.error(e.getCause().getMessage());
+        }
 
-        return Objects.requireNonNullElse(result, 0);
+        return result;
     }
 
     @Override
