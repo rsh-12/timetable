@@ -40,6 +40,7 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
                 .firstName("Егор")
                 .middleName("Михайлович")
                 .email("volkov@mail.ru")
+                .phone("89232183923")
                 .gender(Gender.MALE)
                 .build();
 
@@ -54,6 +55,21 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
     @Test
     public void findByEmail_ShouldReturnOptionalEmpty() {
         assertTrue(dao.findByEmail("some@mail.com").isEmpty());
+    }
+
+    @Test
+    public void findByEmail() {
+        assertTrue(dao.findByEmail(savedEntity.getEmail()).isPresent());
+    }
+
+    @Test
+    public void findByPhone_ShouldReturnOptionalEmpty() {
+        assertTrue(dao.findByPhone("892323232343").isEmpty());
+    }
+
+    @Test
+    public void findByPhone() {
+        assertTrue(dao.findByPhone(savedEntity.getPhone()).isPresent());
     }
 
 }
