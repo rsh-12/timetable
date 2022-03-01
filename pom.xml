@@ -154,6 +154,7 @@
             <exclude>ru/timetable/config/**/*</exclude>
             <exclude>ru/timetable/dao/util/**/*</exclude>
             <exclude>ru/timetable/domain/util/**/*</exclude>
+            <exclude>ru/timetable/domain/factory/**/*</exclude>
             <exclude>ru/timetable/util/**/*</exclude>
           </excludes>
         </configuration>
