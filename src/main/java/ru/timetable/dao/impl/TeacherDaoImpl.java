@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.TeacherDao;
 import ru.timetable.dao.mappers.TeacherRowMapper;
 import ru.timetable.domain.Teacher;
@@ -127,8 +126,23 @@ public class TeacherDaoImpl implements TeacherDao {
     }
 
     @Override
-    @Transactional
     public void insertAll(List<Teacher> entities) {
+        log.debug("insertAll: inserts multiple entities");
+
+        String sql = """
+                INSERT INTO teacher(last_name, first_name, middle_name, gender,email, phone)
+                VALUES (?, ?, ?, ?, ?, ?);
+                """;
+
+        util.handleDuplicateKeyException(
+                () -> jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, teacher) -> {
+                    ps.setString(1, teacher.getLastName());
+                    ps.setString(2, teacher.getFirstName());
+                    ps.setString(3, teacher.getMiddleName());
+                    ps.setString(4, teacher.getGender().name());
+                    ps.setString(5, teacher.getEmail());
+                    ps.setString(6, teacher.getPhone());
+                }));
     }
 
     @Override
