@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,6 +97,29 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
         dao.delete(null);
         dao.delete(savedEntity);
         dao.delete(savedEntity);
+    }
+
+    @Test
+    public void insertAll() {
+        int before = dao.count();
+        dao.insertAll(List.of(
+                new Teacher("Дроздова", "Лариса", "Евгеньевна"),
+                new Teacher("Михеева", "Елена", "Наумовна")
+        ));
+
+        assertEquals(before + 2, dao.count());
+    }
+
+    @Test
+    public void insertAll_DuplicateKeyException() {
+        int before = dao.count();
+        dao.insertAll(List.of(
+                new Teacher("Дроздова", "Лариса", "Евгеньевна"),
+                new Teacher("Михеева", "Елена", "Наумовна"),
+                savedEntity
+        ));
+
+        assertEquals(before, dao.count());
     }
 
 }
