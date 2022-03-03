@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -35,7 +36,8 @@ public class Teacher {
     @NonNull
     private String middleName;
 
-    private Gender gender;
+    @Default
+    private Gender gender = Gender.FEMALE;
 
     private String email;
 
@@ -52,6 +54,7 @@ public class Teacher {
         this.lastName = lastName;
         this.firstName = firstName;
         this.middleName = middleName;
+        this.gender = Gender.FEMALE;
     }
 
     @Override
