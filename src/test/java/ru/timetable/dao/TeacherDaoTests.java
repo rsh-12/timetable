@@ -122,4 +122,12 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
         assertEquals(before, dao.count());
     }
 
+    @Test
+    public void insert_DuplicateKeyException() {
+        int before = dao.count();
+        int result = dao.insert(savedEntity);
+        assertEquals(0, result);
+        assertEquals(before, dao.count());
+    }
+
 }
