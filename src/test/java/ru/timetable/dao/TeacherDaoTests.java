@@ -6,7 +6,6 @@ package ru.timetable.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.List;
@@ -17,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Teacher;
@@ -103,10 +104,7 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
     @Test
     public void insertAll() {
         int before = dao.count();
-        dao.insertAll(List.of(
-                new Teacher("Дроздова", "Лариса", "Евгеньевна"),
-                new Teacher("Михеева", "Елена", "Наумовна")
-        ));
+        insertEntities();
 
         assertEquals(before + 2, dao.count());
     }
@@ -139,6 +137,24 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
     @Test
     public void findById_ShouldReturnOptionalEmpty() {
         assertTrue(dao.findById(0).isEmpty());
+    }
+
+    @Test
+    public void findAll() {
+        insertEntities();
+        assertEquals(3, dao.count());
+
+        Page<Teacher> page = dao.findAll(PageRequest.of(0, 10));
+        assertEquals(1, page.getTotalPages());
+        assertEquals(10, page.getSize());
+        assertEquals(3, page.getTotalElements());
+    }
+
+    private void insertEntities() {
+        dao.insertAll(List.of(
+                new Teacher("Дроздова", "Лариса", "Евгеньевна"),
+                new Teacher("Михеева", "Елена", "Наумовна")
+        ));
     }
 
 }
