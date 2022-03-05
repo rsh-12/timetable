@@ -6,6 +6,7 @@ package ru.timetable.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.List;
@@ -128,6 +129,16 @@ public class TeacherDaoTests extends PostgreSqlTestBase {
         int result = dao.insert(savedEntity);
         assertEquals(0, result);
         assertEquals(before, dao.count());
+    }
+
+    @Test
+    public void findById() {
+        assertTrue(dao.findById(savedEntity.getId()).isPresent());
+    }
+
+    @Test
+    public void findById_ShouldReturnOptionalEmpty() {
+        assertTrue(dao.findById(0).isEmpty());
     }
 
 }
