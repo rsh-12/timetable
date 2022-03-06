@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
+import static ru.timetable.domain.util.Weekday.THURSDAY;
+import static ru.timetable.domain.util.Weekday.WEDNESDAY;
 
 import java.util.Arrays;
 import java.util.List;
@@ -102,6 +104,26 @@ public class DayDaoTests extends PostgreSqlTestBase {
         List<Day> entities = dao.findAll(PageRequest.of(0, 3)).getContent();
         assertFalse(entities.isEmpty());
         assertEquals(3, entities.size());
+    }
+
+    @Test
+    public void insertAll() {
+        int before = dao.count();
+
+        List<Day> days = List.of(new Day(THURSDAY), new Day(WEDNESDAY));
+        dao.insertAll(days);
+
+        assertEquals(before+ days.size(), dao.count());
+    }
+
+    @Test
+    public void insertAll_DuplicateKeyException() {
+        int before = dao.count();
+
+        List<Day> days = List.of(new Day(THURSDAY), new Day(WEDNESDAY), savedEntity);
+        dao.insertAll(days);
+
+        assertEquals(before, dao.count());
     }
 
     private void fillTable() {
