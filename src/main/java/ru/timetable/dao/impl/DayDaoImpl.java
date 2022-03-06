@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.DayDao;
 import ru.timetable.dao.mappers.DayRowMapper;
 import ru.timetable.domain.Day;
@@ -117,8 +116,18 @@ public class DayDaoImpl implements DayDao {
     }
 
     @Override
-    @Transactional
     public void insertAll(List<Day> entities) {
+        log.debug("insertAll: inserts multiple entities");
+
+        String sql = """
+                INSERT INTO day(name)
+                VALUES (?);
+                """;
+
+        util.handleDuplicateKeyException(
+                () -> jdbcTemplate.batchUpdate(sql, entities, entities.size(),
+                        ((ps, argument) -> ps.setString(1, argument.getName().name())))
+        );
     }
 
     @Override
