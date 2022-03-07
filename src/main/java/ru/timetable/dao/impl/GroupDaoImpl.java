@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.GroupDao;
 import ru.timetable.dao.mappers.GroupRowMapper;
 import ru.timetable.domain.Group;
@@ -116,8 +115,18 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    @Transactional
     public void insertAll(List<Group> entities) {
+        log.debug("insert: saves the Audience to the DB");
+
+        String sql = """
+                INSERT INTO %s(name, department) VALUES (?, ?);
+                """.formatted(TABLE);
+
+        util.handleDuplicateKeyException(() ->
+                jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
+                    ps.setString(1, argument.getName());
+                    ps.setString(2, argument.getDepartment());
+                }));
     }
 
     @Override
