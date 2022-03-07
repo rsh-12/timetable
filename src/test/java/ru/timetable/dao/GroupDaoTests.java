@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
@@ -79,18 +81,44 @@ class GroupDaoTests extends PostgreSqlTestBase {
     }
 
     @Test
+    public void insertAll() {
+        int before = dao.count();
+
+        List<Group> entities = getSomeEntities();
+        dao.insertAll(entities);
+
+        assertEquals(before + entities.size(), dao.count());
+    }
+
+    @Test
+    public void insertAll_ShouldRollbackTransaction() {
+        int before = dao.count();
+
+        ArrayList<Group> entities = new ArrayList<>(getSomeEntities()) {{
+            add(savedEntity);
+        }};
+        dao.insertAll(entities);
+
+        assertEquals(before, dao.count());
+    }
+
+    @Test
     public void findAll() {
         assertEquals(1, dao.count());
 
-        Stream.of("ОЗИ-304", "МД-268", "ЗО-325", "ПР-360")
-                .map(Group::new)
-                .forEach(group -> dao.insert(group));
+        dao.insertAll(getSomeEntities());
 
         assertEquals(5, dao.count());
 
         Page<Group> page = dao.findAll(PageRequest.of(0, 3));
         assertEquals(2, page.getTotalPages());
         assertEquals(3, page.getSize());
+    }
+
+    private List<Group> getSomeEntities() {
+        return Stream.of("ОЗИ-304", "МД-268", "ЗО-325", "ПР-360")
+                .map(Group::new)
+                .toList();
     }
 
 }
