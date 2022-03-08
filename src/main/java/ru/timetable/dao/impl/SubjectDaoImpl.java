@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.SubjectDao;
 import ru.timetable.dao.mappers.SubjectRowMapper;
 import ru.timetable.domain.Subject;
@@ -118,8 +117,18 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    @Transactional
     public void insertAll(List<Subject> entities) {
+        log.debug("insertAll: inserts multiple entities");
+
+        String sql = """
+                INSERT INTO subject(name, type) VALUES (?, ?);
+                """;
+
+        util.handleDuplicateKeyException(
+                () -> jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
+                    ps.setString(1, argument.getName());
+                    ps.setString(2, argument.getType().name());
+                }));
     }
 
     @Override
