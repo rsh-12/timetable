@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,6 +95,27 @@ class SubjectDaoTests extends PostgreSqlTestBase {
         Page<Subject> page = dao.findAll(PageRequest.of(0, 3));
         assertEquals(2, page.getTotalPages());
         assertEquals(3, page.getSize());
+    }
+
+    @Test
+    public void insertAll() {
+        int before = dao.count();
+
+        List<Subject> entities = Stream.of("Math", "English")
+                .map(Subject::new)
+                .toList();
+        dao.insertAll(entities);
+
+        assertEquals(before + entities.size(), dao.count());
+    }
+
+    @Test
+    public void insertAll_ShouldRollbackTransaction() {
+        int before = dao.count();
+
+        dao.insertAll(List.of(new Subject("Math"), savedEntity));
+
+        assertEquals(before, dao.count());
     }
 
 }

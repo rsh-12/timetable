@@ -127,7 +127,7 @@ public class SubjectDaoImpl implements SubjectDao {
         util.handleDuplicateKeyException(
                 () -> jdbcTemplate.batchUpdate(sql, entities, entities.size(), (ps, argument) -> {
                     ps.setString(1, argument.getName());
-                    ps.setString(2, argument.getType().name());
+                    ps.setString(2, argument.getType().name().toLowerCase());
                 }));
     }
 
