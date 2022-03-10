@@ -4,8 +4,8 @@ package ru.timetable.dao.mappers;
  * Time: 6:42 AM
  * */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.postgresql.util.PGobject;
@@ -16,17 +16,21 @@ import ru.timetable.domain.util.PeriodNum;
 
 public class PeriodRowMapper implements RowMapper<Period> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Period mapRow(ResultSet rs, int rowNum) throws SQLException {
+
         int periodNum = rs.getInt("period_num");
         PGobject firstHalfJson = (PGobject) rs.getObject("first_half");
         PGobject secondHalfJson = (PGobject) rs.getObject("second_half");
 
         try {
-            Pair firstHalf = objectMapper.readValue(firstHalfJson.getValue(), Pair.class);
-            Pair secondHalf = objectMapper.readValue(secondHalfJson.getValue(), Pair.class);
+            Pair firstHalf = objectMapper.reader()
+                    .readValue(firstHalfJson.getValue(), Pair.class);
+
+            Pair secondHalf = objectMapper.reader()
+                    .readValue(secondHalfJson.getValue(), Pair.class);
 
             return Period.builder()
                     .id(rs.getInt("id"))
@@ -35,7 +39,7 @@ public class PeriodRowMapper implements RowMapper<Period> {
                     .secondHalf(secondHalf)
                     .build();
 
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Something went wrong");
         }
