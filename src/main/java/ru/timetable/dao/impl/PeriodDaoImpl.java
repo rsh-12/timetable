@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.dao.PeriodDao;
 import ru.timetable.dao.mappers.PeriodRowMapper;
 import ru.timetable.domain.Period;
@@ -121,7 +120,6 @@ public class PeriodDaoImpl implements PeriodDao {
     }
 
     @Override
-    @Transactional
     public void insertAll(List<Period> entities) {
         log.debug("insertAll: inserts multiple entities");
 
