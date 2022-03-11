@@ -16,7 +16,7 @@ import ru.timetable.domain.util.Pair;
 @Component
 public class ServiceUtil {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    public final static ObjectMapper objectMapper = new ObjectMapper();
 
     // todo: create a custom exception
     public String toJsonString(Pair pair) {
@@ -28,7 +28,7 @@ public class ServiceUtil {
         }
     }
 
-    public  <T> T handleDuplicateKeyException(Supplier<T> supplier) {
+    public <T> T handleDuplicateKeyException(Supplier<T> supplier) {
         try {
             return supplier.get();
         } catch (DuplicateKeyException e) {
