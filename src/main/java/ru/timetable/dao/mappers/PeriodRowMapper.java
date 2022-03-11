@@ -4,7 +4,6 @@ package ru.timetable.dao.mappers;
  * Time: 6:42 AM
  * */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,10 +12,9 @@ import org.springframework.jdbc.core.RowMapper;
 import ru.timetable.domain.Period;
 import ru.timetable.domain.util.Pair;
 import ru.timetable.domain.util.PeriodNum;
+import ru.timetable.util.ServiceUtil;
 
 public class PeriodRowMapper implements RowMapper<Period> {
-
-    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Period mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -26,10 +24,10 @@ public class PeriodRowMapper implements RowMapper<Period> {
         PGobject secondHalfJson = (PGobject) rs.getObject("second_half");
 
         try {
-            Pair firstHalf = objectMapper.reader()
+            Pair firstHalf = ServiceUtil.objectMapper.reader()
                     .readValue(firstHalfJson.getValue(), Pair.class);
 
-            Pair secondHalf = objectMapper.reader()
+            Pair secondHalf = ServiceUtil.objectMapper.reader()
                     .readValue(secondHalfJson.getValue(), Pair.class);
 
             return Period.builder()
