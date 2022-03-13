@@ -6,7 +6,6 @@ package ru.timetable.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +17,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Teacher;
 import ru.timetable.domain.util.Gender;
 
 @SpringBootTest
-@Transactional(propagation = NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class TeacherDaoTests extends PostgreSqlTestBase {
 

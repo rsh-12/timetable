@@ -2,7 +2,6 @@ package ru.timetable.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +16,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Group;
 
 @SpringBootTest
-@Transactional(propagation = NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class GroupDaoTests extends PostgreSqlTestBase {
 

@@ -7,7 +7,6 @@ package ru.timetable.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 import static ru.timetable.domain.util.Weekday.THURSDAY;
 import static ru.timetable.domain.util.Weekday.WEDNESDAY;
 
@@ -22,13 +21,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.timetable.PostgreSqlTestBase;
 import ru.timetable.domain.Day;
 import ru.timetable.domain.util.Weekday;
 
 @SpringBootTest
-@Transactional(propagation = NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class DayDaoTests extends PostgreSqlTestBase {
 
